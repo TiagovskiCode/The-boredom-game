@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Party HUB - Passatempos para Amigos</title>
+  <meta name="description" content="Catálogo de jogos rápidos para jogar com amigos, sem instalar nada: sorteios, rondas e placar, tudo no mesmo ecrã.">
+  <meta property="og:title" content="Party HUB — Passatempos para Amigos">
+  <meta property="og:description" content="Catálogo de jogos rápidos para jogar com amigos, sem instalar nada.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+
+    <!-- Faixa utilitária -->
+    <div class="utility-bar">
+      <div class="utility-bar-inner">
+        <span class="session-indicator">
+          <span class="dot" aria-hidden="true"></span>
+          Sessão ativa · <strong id="stat-players-mini">0</strong> jogador(es)
+        </span>
+        <nav class="utility-nav">
+          <a href="#sobre">Sobre</a>
+          <a href="#games-grid">Jogos</a>
+          <a href="#" id="leaderboard-link">Placar</a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Barra principal -->
+    <div class="top-bar">
+      <div class="brand">
+        <span class="brand-icon">🎮</span>
+        <div class="brand-text">
+          <h1>Party HUB</h1>
+          <p class="brand-tagline">Passatempos para noites sem telemóvel</p>
+        </div>
+      </div>
+      <nav class="nav-controls">
+        <div class="player-setup">
+          <label for="player-input" class="player-setup-label">Jogadores</label>
+          <input type="text" id="player-input" placeholder="Nome do amigo...">
+          <button class="btn btn-ghost" id="add-player-btn">+ Adicionar</button>
+          <div id="players-list" class="tags-container"></div>
+        </div>
+        <button class="btn btn-secondary" id="leaderboard-btn">
+          <span id="leaderboard-label">🏆 Placar</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero: seleção de personagem -->
+  <section class="hero-select">
+    <div class="hero-select-inner">
+      <div class="hero-content">
+        <p class="hero-tag">Sessão de hoje · Nº 01</p>
+        <h2 class="hero-name">PARTY<br><span class="accent">HUB</span></h2>
+        <blockquote class="hero-quote">
+          “Já ninguém sabe o que fazer depois das onze. Nós sabemos.”
+        </blockquote>
+        <div class="hero-cta-row">
+          <a href="#games-grid" class="btn btn-primary">▶ Escolher Jogo</a>
+          <a href="#sobre" class="btn btn-outline">Sobre o Projeto</a>
+        </div>
+      </div>
+
+      <div class="hero-portrait">
+        <div class="hero-portrait-frame">
+          <svg class="hero-portrait-art" viewBox="0 0 420 520" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="redGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#C9333F"/>
+                <stop offset="100%" stop-color="#6E101E"/>
+              </linearGradient>
+            </defs>
+            <!-- ventaque de cartas -->
+            <g transform="translate(210,345)">
+              <rect x="-95" y="-70" width="110" height="150" rx="10" transform="rotate(-16)" fill="url(#redGrad)" opacity="0.92"/>
+              <rect x="-55" y="-75" width="110" height="150" rx="10" fill="#181818" stroke="#C9333F" stroke-width="2.5"/>
+              <rect x="-15" y="-70" width="110" height="150" rx="10" transform="rotate(15)" fill="url(#redGrad)" opacity="0.85"/>
+            </g>
+            <!-- dado -->
+            <g transform="translate(292,118)">
+              <rect x="-55" y="-55" width="110" height="110" rx="18" fill="#181818" stroke="url(#redGrad)" stroke-width="3.5"/>
+              <circle cx="-25" cy="-25" r="7" fill="#C9333F"/>
+              <circle cx="25" cy="-25" r="7" fill="#C9333F"/>
+              <circle cx="0" cy="0" r="7" fill="#C9333F"/>
+              <circle cx="-25" cy="25" r="7" fill="#C9333F"/>
+              <circle cx="25" cy="25" r="7" fill="#C9333F"/>
+            </g>
+            <!-- comando de jogo -->
+            <g transform="translate(108,158)">
+              <rect x="-15" y="-8" width="30" height="95" rx="13" fill="#181818" stroke="url(#redGrad)" stroke-width="3.5"/>
+              <circle cx="0" cy="-25" r="32" fill="url(#redGrad)"/>
+              <circle cx="0" cy="-25" r="10" fill="#181818"/>
+            </g>
+          </svg>
+          <span class="frame-corner tl" aria-hidden="true"></span>
+          <span class="frame-corner tr" aria-hidden="true"></span>
+          <span class="frame-corner bl" aria-hidden="true"></span>
+          <span class="frame-corner br" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sobre -->
+  <section class="about-section" id="sobre">
+    <div class="about-inner">
+      <div class="about-main">
+        <p class="section-eyebrow">Sobre o Party HUB</p>
+        <h2 class="about-title">Feito para o momento em que ninguém sabe mais o que fazer</h2>
+        <p class="about-text">
+          Todos conhecemos aquela hora: o grupo já jantou, já falou de tudo, e o telemóvel de cada um começa
+          a sair do bolso. O Party HUB existe para esse momento — um catálogo de jogos rápidos, sem instalar
+          nada, para jogar em roda com quem está à tua frente.
+        </p>
+        <p class="about-text">
+          Junta os nomes, escolhe um jogo no catálogo e o resto trata-se sozinho: sorteios, rondas e pontuação,
+          tudo dentro do mesmo ecrã.
+        </p>
+      </div>
+
+      <div class="about-steps">
+        <div class="step">
+          <span class="step-num">01</span>
+          <h3>Adiciona os jogadores</h3>
+          <p>Escreve os nomes no topo. Junta ou tira amigos a qualquer momento.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">02</span>
+          <h3>Escolhe um jogo</h3>
+          <p>Filtra por festa, utilitários ou favoritos no catálogo abaixo.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">03</span>
+          <h3>Joga e acumula pontos</h3>
+          <p>Cada ronda soma ao placar. No final, sabe-se quem venceu a noite.</p>
+        </div>
+      </div>
+
+      <div class="about-stats">
+        <div class="stat">
+          <span class="stat-label">Jogadores na sala</span>
+          <span class="stat-value" id="stat-players">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Jogos no catálogo</span>
+          <span class="stat-value" id="stat-game-count">9</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Líder do placar</span>
+          <span class="stat-value" id="stat-leader">—</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Pontos totais</span>
+          <span class="stat-value" id="stat-total-points">0</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catálogo de Jogos -->
+  <main class="hub-container">
+    <div class="hub-header">
+      <h2>Catálogo de Jogos</h2>
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all" aria-pressed="true">Todos</button>
+        <button class="filter-btn" data-filter="favs" aria-pressed="false">❤️ Favoritos</button>
+        <button class="filter-btn" data-filter="recom" aria-pressed="false">⭐ Recomendados</button>
+        <button class="filter-btn" data-filter="festa" aria-pressed="false">Festa</button>
+        <button class="filter-btn" data-filter="util" aria-pressed="false">Utilitários</button>
+      </div>
+    </div>
+
+    <div class="games-grid" id="games-grid">
+      <!-- Jogos injetados via JS (js/hub.js a partir de js/data.js) -->
+      <p class="empty-state" id="empty-state">Nenhum jogo encontrado para este filtro.</p>
+    </div>
+  </main>
+
+  <!-- Game Modal System -->
+  <div id="game-modal" class="modal hidden">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-label="Janela do jogo" tabindex="-1">
+      <button class="close-btn" id="close-modal" aria-label="Fechar">&times;</button>
+      <div id="game-screen"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>Party HUB · feito para noites sem telemóvel na mão · 100% offline</p>
+  </footer>
+
+  <!-- Dados centrais (catálogo + favoritos) -->
+  <script src="js/data.js" defer></script>
+  <!-- Utilitários partilhados (ex: sorteio sem repetição) -->
+  <script src="js/utils.js" defer></script>
+  <!-- Placar global (pontuações estilo Kahoot) -->
+  <script src="js/leaderboard.js" defer></script>
+  <!-- Gestão de jogadores -->
+  <script src="js/players.js" defer></script>
+  <!-- Módulos de cada jogo, cada um regista-se em window.GameModules -->
+  <script src="js/games/provavel.js" defer></script>
+  <script src="js/games/roleta.js" defer></script>
+  <script src="js/games/impostor.js" defer></script>
+  <script src="js/games/verdade-desafio.js" defer></script>
+  <script src="js/games/blitz.js" defer></script>
+  <script src="js/games/reacao.js" defer></script>
+  <script src="js/games/categorias.js" defer></script>
+  <script src="js/games/mimica.js" defer></script>
+  <script src="js/games/palavra-proibida.js" defer></script>
+  <!-- Controlador do HUB (grid, filtros, modal) -->
+  <script src="js/hub.js" defer></script>
+
+  <!-- Pequenos ganchos do novo header (não mexe nos ficheiros acima) -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // O link "Placar" da faixa utilitária aciona o botão já existente
+    document.getElementById('leaderboard-link')?.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.getElementById('leaderboard-btn')?.click();
+    });
+
+    // Espelha o número de jogadores (já atualizado noutro lado do código)
+    // para o contador mini da faixa utilitária
+    (function () {
+      var source = document.getElementById('stat-players');
+      var mini = document.getElementById('stat-players-mini');
+      if (!source || !mini) return;
+
+      var sync = function () { mini.textContent = source.textContent; };
+      sync();
+      new MutationObserver(sync).observe(source, { childList: true, characterData: true, subtree: true });
+    })();
+
+    // Liga a barra de estatísticas (Sobre) aos dados reais de
+    // Players e Leaderboard, sem alterar os ficheiros originais
+    (function () {
+      var elPlayers = document.getElementById('stat-players');
+      var elLeader = document.getElementById('stat-leader');
+      var elTotal = document.getElementById('stat-total-points');
+      if (!elPlayers || !elLeader || !elTotal) return;
+
+      function refreshStats() {
+        elPlayers.textContent = Players.count();
+        var scores = Leaderboard.getScores();
+        var total = scores.reduce(function (sum, s) { return sum + s.points; }, 0);
+        elTotal.textContent = total;
+        elLeader.textContent = (scores.length && scores[0].points > 0) ? scores[0].player : '—';
+      }
+
+      var elCount = document.getElementById('stat-game-count');
+      if (elCount && typeof GAMES_DATA !== 'undefined') elCount.textContent = GAMES_DATA.length;
+
+      // atualiza sempre que a lista de jogadores muda
+      var playersList = document.getElementById('players-list');
+      if (playersList) new MutationObserver(refreshStats).observe(playersList, { childList: true });
+
+      // atualiza sempre que alguém pontua ou o placar é reiniciado
+      var originalAddPoints = Leaderboard.addPoints;
+      Leaderboard.addPoints = function () {
+        originalAddPoints.apply(Leaderboard, arguments);
+        refreshStats();
+      };
+      var originalReset = Leaderboard.reset;
+      Leaderboard.reset = function () {
+        originalReset.apply(Leaderboard, arguments);
+        refreshStats();
+      };
+
+      refreshStats();
+    })();
+  });
+  </script>
+</body>
+</html>
