@@ -3,192 +3,146 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0A0A0A">
-  <title>Party HUB - Passatempos para Amigos</title>
-  <meta name="description" content="Catálogo de jogos rápidos para jogar com amigos, sem instalar nada: sorteios, rondas e placar, tudo no mesmo ecrã.">
-  <meta property="og:title" content="Party HUB — Passatempos para Amigos">
-  <meta property="og:description" content="Catálogo de jogos rápidos para jogar com amigos, sem instalar nada.">
+  <meta name="theme-color" content="#07070C">
+  <title>The Boredom Game - Passatempos para Amigos</title>
+  <meta name="description" content="Jogos rápidos para jogar em grupo com um só telemóvel: sorteios, rondas e placar, sem registo e sem instalar nada.">
+  <meta property="og:title" content="The Boredom Game — Passatempos para Amigos">
+  <meta property="og:description" content="Jogos rápidos para jogar em grupo com um só telemóvel, sem registo.">
   <meta property="og:type" content="website">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♠</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- Header -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track" id="ticker-track"></div>
+  </div>
+
   <header class="site-header">
-
-    <!-- Faixa utilitária -->
-    <div class="utility-bar">
-      <div class="utility-bar-inner">
-        <span class="session-indicator">
-          <span class="dot" aria-hidden="true"></span>
-          Sessão ativa · <strong id="stat-players-mini">0</strong> jogador(es)
-        </span>
-        <nav class="utility-nav">
-          <a href="#sobre">Sobre</a>
-          <a href="#games-grid">Jogos</a>
-          <a href="#" id="leaderboard-link">Placar</a>
-        </nav>
-      </div>
-    </div>
-
-    <!-- Barra principal -->
-    <div class="top-bar">
-      <div class="brand">
-        <span class="brand-icon">🎮</span>
-        <div class="brand-text">
-          <h1>Party HUB</h1>
-          <p class="brand-tagline">Passatempos para noites sem telemóvel</p>
-        </div>
-      </div>
-      <nav class="nav-controls">
-        <div class="player-setup">
-          <label for="player-input" class="player-setup-label">Jogadores</label>
-          <input type="text" id="player-input" placeholder="Nome do amigo..." maxlength="24" autocomplete="off" autocapitalize="words" enterkeyhint="done">
-          <button class="btn btn-ghost" id="add-player-btn">+ Adicionar</button>
-          <div id="players-list" class="tags-container"></div>
-        </div>
-        <button class="btn btn-secondary" id="leaderboard-btn">
+    <div class="nav-bar">
+      <a href="#topo" class="logo">THE BOREDOM GAME</a>
+      <nav class="nav-links">
+        <a href="#jogos">Jogos</a>
+        <a href="#como">Níveis</a>
+        <a href="#origem">Origem</a>
+        <a href="#" id="leaderboard-link">Placar</a>
+        <button class="btn rgb-border cut" id="leaderboard-btn">
           <span id="leaderboard-label">🏆 Placar</span>
         </button>
       </nav>
     </div>
   </header>
 
-  <!-- Hero: seleção de personagem -->
-  <section class="hero-select">
-    <div class="hero-select-inner">
-      <div class="hero-content">
-        <p class="hero-tag">Sessão de hoje · Nº 01</p>
-        <h2 class="hero-name">PARTY<br><span class="accent">HUB</span></h2>
-        <blockquote class="hero-quote">
-          “Já ninguém sabe o que fazer depois das onze. Nós sabemos.”
-        </blockquote>
-        <div class="hero-cta-row">
-          <a href="#games-grid" class="btn btn-primary">▶ Escolher Jogo</a>
-          <a href="#sobre" class="btn btn-outline">Sobre o Projeto</a>
+  <main id="topo">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="press-start"><i aria-hidden="true"></i>PRESS START</div>
+        <h1 class="hero-title">A noite ainda <em class="rgb-text">não acabou.</em></h1>
+        <p class="hero-sub">Jogos para o grupo todo, num só telemóvel. Junta os nomes, escolhe um jogo e deixa as rondas, os sorteios e o placar por nossa conta.</p>
+        <div class="cta-row">
+          <a href="#jogadores" class="btn btn-fill rgb-fill cut">▶ Começar a noite</a>
         </div>
       </div>
 
-      <div class="hero-portrait">
-        <div class="hero-portrait-frame">
-          <svg class="hero-portrait-art" viewBox="0 0 420 520" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-              <linearGradient id="redGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#C9333F"/>
-                <stop offset="100%" stop-color="#6E101E"/>
-              </linearGradient>
-            </defs>
-            <!-- ventaque de cartas -->
-            <g transform="translate(210,345)">
-              <rect x="-95" y="-70" width="110" height="150" rx="10" transform="rotate(-16)" fill="url(#redGrad)" opacity="0.92"/>
-              <rect x="-55" y="-75" width="110" height="150" rx="10" fill="#181818" stroke="#C9333F" stroke-width="2.5"/>
-              <rect x="-15" y="-70" width="110" height="150" rx="10" transform="rotate(15)" fill="url(#redGrad)" opacity="0.85"/>
-            </g>
-            <!-- dado -->
-            <g transform="translate(292,118)">
-              <rect x="-55" y="-55" width="110" height="110" rx="18" fill="#181818" stroke="url(#redGrad)" stroke-width="3.5"/>
-              <circle cx="-25" cy="-25" r="7" fill="#C9333F"/>
-              <circle cx="25" cy="-25" r="7" fill="#C9333F"/>
-              <circle cx="0" cy="0" r="7" fill="#C9333F"/>
-              <circle cx="-25" cy="25" r="7" fill="#C9333F"/>
-              <circle cx="25" cy="25" r="7" fill="#C9333F"/>
-            </g>
-            <!-- comando de jogo -->
-            <g transform="translate(108,158)">
-              <rect x="-15" y="-8" width="30" height="95" rx="13" fill="#181818" stroke="url(#redGrad)" stroke-width="3.5"/>
-              <circle cx="0" cy="-25" r="32" fill="url(#redGrad)"/>
-              <circle cx="0" cy="-25" r="10" fill="#181818"/>
-            </g>
-          </svg>
-          <span class="frame-corner tl" aria-hidden="true"></span>
-          <span class="frame-corner tr" aria-hidden="true"></span>
-          <span class="frame-corner bl" aria-hidden="true"></span>
-          <span class="frame-corner br" aria-hidden="true"></span>
+      <div class="stage" id="stage">
+        <div class="ring" aria-hidden="true"></div>
+        <div class="orbit" aria-hidden="true"><span>▲</span><span>●</span><span>■</span><span>◆</span></div>
+        <div class="win-banner" id="win-banner" aria-hidden="true">▶ JOGO DESBLOQUEADO</div>
+        <div class="burst" id="burst" aria-hidden="true"></div>
+        <div class="cabinet" id="roleta">
+          <div class="cabinet-head"><span>ROLETA DE JOGOS</span><b>● LIVE</b></div>
+          <div class="rgb-line" aria-hidden="true"></div>
+          <div id="roulette">
+            <div class="drum">
+              <div class="drum-row" data-slot="prev" aria-hidden="true"></div>
+              <div class="drum-row is-current" data-slot="cur"></div>
+              <div class="drum-row" data-slot="next" aria-hidden="true"></div>
+            </div>
+            <p class="drum-hint" data-slot="hint" role="status"></p>
+            <button class="spin-btn" data-action="spin">Rodar</button>
+            <button class="btn rgb-border cut play-btn" data-action="play"></button>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Sobre -->
-  <section class="about-section" id="sobre">
-    <div class="about-inner">
-      <div class="about-main">
-        <p class="section-eyebrow">Sobre o Party HUB</p>
-        <h2 class="about-title">Feito para o momento em que ninguém sabe mais o que fazer</h2>
-        <p class="about-text">
-          Todos conhecemos aquela hora: o grupo já jantou, já falou de tudo, e o telemóvel de cada um começa
-          a sair do bolso. O Party HUB existe para esse momento — um catálogo de jogos rápidos, sem instalar
-          nada, para jogar em roda com quem está à tua frente.
-        </p>
-        <p class="about-text">
-          Junta os nomes, escolhe um jogo no catálogo e o resto trata-se sozinho: sorteios, rondas e pontuação,
-          tudo dentro do mesmo ecrã.
-        </p>
+    <section class="facts">
+      <div class="facts-inner">
+        <div class="fact"><span class="fact-value" id="stat-game-count">9</span><span class="fact-label">Jogos no catálogo</span></div>
+        <div class="fact"><span class="fact-value" id="stat-players">0</span><span class="fact-label">Jogadores na sala</span></div>
+        <div class="fact"><span class="fact-value" id="stat-leader">—</span><span class="fact-label">Líder do placar</span></div>
+        <div class="fact"><span class="fact-value" id="stat-total-points">0</span><span class="fact-label">Pontos totais</span></div>
       </div>
+    </section>
 
-      <div class="about-steps">
-        <div class="step">
-          <span class="step-num">01</span>
-          <h3>Adiciona os jogadores</h3>
-          <p>Escreve os nomes no topo. Junta ou tira amigos a qualquer momento.</p>
-        </div>
-        <div class="step">
-          <span class="step-num">02</span>
-          <h3>Escolhe um jogo</h3>
-          <p>Filtra por festa, utilitários ou favoritos no catálogo abaixo.</p>
-        </div>
-        <div class="step">
-          <span class="step-num">03</span>
-          <h3>Joga e acumula pontos</h3>
-          <p>Cada ronda soma ao placar. No final, sabe-se quem venceu a noite.</p>
+    <section class="players-panel" id="jogadores">
+      <h2 class="section-title">Quem joga hoje?</h2>
+      <p class="section-sub">Escreve os nomes do grupo. Junta ou tira amigos a qualquer momento: a roleta e o catálogo ajustam-se.</p>
+      <div class="player-setup">
+        <label for="player-input" class="player-setup-label">Jogadores</label>
+        <input type="text" id="player-input" placeholder="Nome do amigo..." maxlength="24" autocomplete="off" autocapitalize="words" enterkeyhint="done">
+        <button class="btn btn-ghost" id="add-player-btn">+ Adicionar</button>
+        <span class="session-indicator"><strong id="stat-players-mini">0</strong>&nbsp;na sessão</span>
+        <div id="players-list" class="tags-container"></div>
+      </div>
+    </section>
+
+    <section class="hub-container" id="jogos">
+      <div class="hub-header">
+        <h2 class="section-title">Escolhe a tua mesa</h2>
+        <div class="filters">
+          <button class="filter-btn active" data-filter="all" aria-pressed="true">Todos</button>
+          <button class="filter-btn" data-filter="favs" aria-pressed="false">❤️ Favoritos</button>
+          <button class="filter-btn" data-filter="recom" aria-pressed="false">⭐ Recomendados</button>
+          <button class="filter-btn" data-filter="festa" aria-pressed="false">Festa</button>
+          <button class="filter-btn" data-filter="util" aria-pressed="false">Utilitários</button>
         </div>
       </div>
 
-      <div class="about-stats">
-        <div class="stat">
-          <span class="stat-label">Jogadores na sala</span>
-          <span class="stat-value" id="stat-players">0</span>
+      <div class="games-grid" id="games-grid">
+        <p class="empty-state" id="empty-state">Nenhum jogo encontrado para este filtro.</p>
+      </div>
+    </section>
+
+    <section class="how" id="como">
+      <h2 class="section-title">Três <span class="rgb-text">níveis</span> e já estás a jogar</h2>
+      <div class="how-steps">
+        <div class="how-step"><b>LVL 01</b><h3>Adiciona os jogadores</h3><p>Escreve os nomes. Junta ou tira amigos a qualquer momento.</p></div>
+        <div class="how-step"><b>LVL 02</b><h3>Escolhe um jogo</h3><p>Filtra por festa, utilitários ou favoritos, ou deixa a roleta decidir.</p></div>
+        <div class="how-step"><b>LVL 03</b><h3>Joga e acumula pontos</h3><p>Cada ronda soma ao placar. No final, sabe-se quem venceu a noite.</p></div>
+      </div>
+    </section>
+
+    <section class="origin" id="origem">
+      <div class="origin-copy">
+        <h2 class="section-title">Como tudo <span class="rgb-text">começou</span></h2>
+        <p class="origin-lead">Todos conhecemos aquela hora: o grupo já jantou, já falou de tudo e os telemóveis começam a sair do bolso.</p>
+        <p class="origin-text">O The Boredom Game nasceu entre dois amigos, o Tiago e o Gabriel, com uma ideia simples: um só telemóvel no meio da mesa e jogos rápidos para quem está à tua frente.</p>
+      </div>
+      <div class="makers">
+        <div class="maker">
+          <div class="maker-avatar cut" aria-hidden="true">T</div>
+          <div><div class="maker-name">Tiago Teixeira</div><div class="maker-role">Web developer</div></div>
         </div>
-        <div class="stat">
-          <span class="stat-label">Jogos no catálogo</span>
-          <span class="stat-value" id="stat-game-count">9</span>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Líder do placar</span>
-          <span class="stat-value" id="stat-leader">—</span>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Pontos totais</span>
-          <span class="stat-value" id="stat-total-points">0</span>
+        <div class="maker">
+          <div class="maker-avatar cut" aria-hidden="true">G</div>
+          <div><div class="maker-name">Gabriel</div><div class="maker-role">Co-criador</div></div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Catálogo de Jogos -->
-  <main class="hub-container">
-    <div class="hub-header">
-      <h2>Catálogo de Jogos</h2>
-      <div class="filters">
-        <button class="filter-btn active" data-filter="all" aria-pressed="true">Todos</button>
-        <button class="filter-btn" data-filter="favs" aria-pressed="false">❤️ Favoritos</button>
-        <button class="filter-btn" data-filter="recom" aria-pressed="false">⭐ Recomendados</button>
-        <button class="filter-btn" data-filter="festa" aria-pressed="false">Festa</button>
-        <button class="filter-btn" data-filter="util" aria-pressed="false">Utilitários</button>
+    <section class="final-cta">
+      <div class="final-cta-box">
+        <h2>Já ninguém sabe o que fazer <span class="rgb-text">depois das onze.</span></h2>
+        <p>Nós sabemos.</p>
+        <a href="#jogadores" class="btn btn-fill rgb-fill cut">▶ START</a>
       </div>
-    </div>
-
-    <div class="games-grid" id="games-grid">
-      <!-- Jogos injetados via JS (js/hub.js a partir de js/data.js) -->
-      <p class="empty-state" id="empty-state">Nenhum jogo encontrado para este filtro.</p>
-    </div>
+    </section>
   </main>
 
-  <!-- Game Modal System -->
   <div id="game-modal" class="modal hidden">
     <div class="modal-content" role="dialog" aria-modal="true" aria-label="Janela do jogo" tabindex="-1">
       <button class="close-btn" id="close-modal" aria-label="Fechar">&times;</button>
@@ -197,7 +151,7 @@
   </div>
 
   <footer class="site-footer">
-    <p>Party HUB · feito para noites sem telemóvel na mão · 100% offline</p>
+    <p>THE BOREDOM GAME · feito para noites sem telemóvel na mão</p>
   </footer>
 
   <script src="js/data.js" defer></script>
@@ -216,6 +170,7 @@
   <script src="js/games/mimica.js" defer></script>
   <script src="js/games/palavra-proibida.js" defer></script>
   <script src="js/stats.js" defer></script>
+  <script src="js/roulette.js" defer></script>
   <script src="js/hub.js" defer></script>
 </body>
 </html>
