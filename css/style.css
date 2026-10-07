@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
-
 /* ============ Tokens ============
    Preto/vermelho, tipografia condensada maiúscula, molduras
    finas tipo ecrã de seleção de personagem — sem gradientes
@@ -24,12 +22,12 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: var(--font-body);
 }
 
 html { scroll-behavior: smooth; }
 
 body {
+  font-family: var(--font-body);
   background: var(--ink);
   color: var(--paper);
   min-height: 100vh;
@@ -37,7 +35,7 @@ body {
   overflow-x: hidden;
 }
 
-button { font-family: inherit; }
+button, input, select, textarea { font-family: inherit; }
 
 :focus-visible {
   outline: 2px solid var(--blood);
@@ -825,4 +823,130 @@ h1, h2, h3 {
   .hub-container { padding: 2.5rem 1.25rem 3rem; }
   .hub-header { flex-direction: column; align-items: flex-start; }
   .about-section { padding: 3rem 1.25rem; }
+}
+
+:root { --blood-text: #E5535E; }
+
+.session-indicator,
+.utility-nav a,
+.brand-tagline,
+.player-setup-label,
+.stat-label,
+.hero-tag,
+.section-eyebrow,
+.players-tag,
+.card-badge { font-size: 12px; }
+
+.hero-tag,
+.section-eyebrow,
+.players-tag,
+.card-badge { color: var(--blood-text); }
+
+.utility-nav a:hover,
+.btn-outline:hover { color: var(--blood-text); }
+
+.card-open {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.card-open:focus-visible {
+  outline: 2px solid var(--blood);
+  outline-offset: -4px;
+}
+
+.card-badge { pointer-events: none; }
+
+.fav-btn {
+  top: 4px;
+  right: 4px;
+  width: 44px;
+  height: 44px;
+}
+
+.remove-player {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.remove-player::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+}
+
+.close-btn {
+  top: 4px;
+  right: 8px;
+  width: 44px;
+  height: 44px;
+  line-height: 1;
+}
+
+.modal-content { max-height: 90dvh; }
+
+.row-label {
+  flex: 1;
+  padding: 8px 12px;
+  background: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.row-points {
+  padding: 8px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--blood-text);
+}
+
+.option-row .game-btn { margin-top: 0; }
+
+.game-lead { margin: 8px 0 16px; }
+
+.game-letter {
+  margin: 16px 0;
+  font-family: var(--font-display);
+  font-size: 64px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--blood-text);
+}
+
+.game-timer {
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--paper);
+}
+
+.game-timer.is-warning { color: var(--blood-text); }
+
+.game-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.game-btn:disabled:hover { background: var(--blood); }
+
+.game-btn.secondary:disabled:hover {
+  background: transparent;
+  border-color: var(--line);
+}
+
+@media (pointer: coarse) {
+  .btn,
+  .filter-btn,
+  .game-btn { min-height: 44px; }
+
+  .player-setup input,
+  .option-row input {
+    min-height: 44px;
+    font-size: 16px;
+  }
 }

@@ -3,12 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0A0A0A">
   <title>Party HUB - Passatempos para Amigos</title>
   <meta name="description" content="Catálogo de jogos rápidos para jogar com amigos, sem instalar nada: sorteios, rondas e placar, tudo no mesmo ecrã.">
   <meta property="og:title" content="Party HUB — Passatempos para Amigos">
   <meta property="og:description" content="Catálogo de jogos rápidos para jogar com amigos, sem instalar nada.">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -43,7 +47,7 @@
       <nav class="nav-controls">
         <div class="player-setup">
           <label for="player-input" class="player-setup-label">Jogadores</label>
-          <input type="text" id="player-input" placeholder="Nome do amigo...">
+          <input type="text" id="player-input" placeholder="Nome do amigo..." maxlength="24" autocomplete="off" autocapitalize="words" enterkeyhint="done">
           <button class="btn btn-ghost" id="add-player-btn">+ Adicionar</button>
           <div id="players-list" class="tags-container"></div>
         </div>
@@ -196,15 +200,12 @@
     <p>Party HUB · feito para noites sem telemóvel na mão · 100% offline</p>
   </footer>
 
-  <!-- Dados centrais (catálogo + favoritos) -->
   <script src="js/data.js" defer></script>
-  <!-- Utilitários partilhados (ex: sorteio sem repetição) -->
   <script src="js/utils.js" defer></script>
-  <!-- Placar global (pontuações estilo Kahoot) -->
+  <script src="js/store.js" defer></script>
   <script src="js/leaderboard.js" defer></script>
-  <!-- Gestão de jogadores -->
   <script src="js/players.js" defer></script>
-  <!-- Módulos de cada jogo, cada um regista-se em window.GameModules -->
+  <script src="js/registry.js" defer></script>
   <script src="js/games/provavel.js" defer></script>
   <script src="js/games/roleta.js" defer></script>
   <script src="js/games/impostor.js" defer></script>
@@ -214,68 +215,7 @@
   <script src="js/games/categorias.js" defer></script>
   <script src="js/games/mimica.js" defer></script>
   <script src="js/games/palavra-proibida.js" defer></script>
-  <!-- Controlador do HUB (grid, filtros, modal) -->
+  <script src="js/stats.js" defer></script>
   <script src="js/hub.js" defer></script>
-
-  <!-- Pequenos ganchos do novo header (não mexe nos ficheiros acima) -->
-  <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // O link "Placar" da faixa utilitária aciona o botão já existente
-    document.getElementById('leaderboard-link')?.addEventListener('click', function (e) {
-      e.preventDefault();
-      document.getElementById('leaderboard-btn')?.click();
-    });
-
-    // Espelha o número de jogadores (já atualizado noutro lado do código)
-    // para o contador mini da faixa utilitária
-    (function () {
-      var source = document.getElementById('stat-players');
-      var mini = document.getElementById('stat-players-mini');
-      if (!source || !mini) return;
-
-      var sync = function () { mini.textContent = source.textContent; };
-      sync();
-      new MutationObserver(sync).observe(source, { childList: true, characterData: true, subtree: true });
-    })();
-
-    // Liga a barra de estatísticas (Sobre) aos dados reais de
-    // Players e Leaderboard, sem alterar os ficheiros originais
-    (function () {
-      var elPlayers = document.getElementById('stat-players');
-      var elLeader = document.getElementById('stat-leader');
-      var elTotal = document.getElementById('stat-total-points');
-      if (!elPlayers || !elLeader || !elTotal) return;
-
-      function refreshStats() {
-        elPlayers.textContent = Players.count();
-        var scores = Leaderboard.getScores();
-        var total = scores.reduce(function (sum, s) { return sum + s.points; }, 0);
-        elTotal.textContent = total;
-        elLeader.textContent = (scores.length && scores[0].points > 0) ? scores[0].player : '—';
-      }
-
-      var elCount = document.getElementById('stat-game-count');
-      if (elCount && typeof GAMES_DATA !== 'undefined') elCount.textContent = GAMES_DATA.length;
-
-      // atualiza sempre que a lista de jogadores muda
-      var playersList = document.getElementById('players-list');
-      if (playersList) new MutationObserver(refreshStats).observe(playersList, { childList: true });
-
-      // atualiza sempre que alguém pontua ou o placar é reiniciado
-      var originalAddPoints = Leaderboard.addPoints;
-      Leaderboard.addPoints = function () {
-        originalAddPoints.apply(Leaderboard, arguments);
-        refreshStats();
-      };
-      var originalReset = Leaderboard.reset;
-      Leaderboard.reset = function () {
-        originalReset.apply(Leaderboard, arguments);
-        refreshStats();
-      };
-
-      refreshStats();
-    })();
-  });
-  </script>
 </body>
 </html>

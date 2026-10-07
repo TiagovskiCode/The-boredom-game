@@ -1,12 +1,5 @@
-// ============================================================
-// hub.js — Controlador principal do HUB.
-// Lê o catálogo (data.js), desenha os cards, trata dos filtros
-// e abre o jogo certo dentro do modal, indo buscá-lo a
-// window.GameModules (preenchido pelos ficheiros em js/games/).
-// ============================================================
-
 let currentFilter = 'all';
-let currentGame = null; // jogo atualmente aberto no modal, para poder limpar timers
+let currentGame = null;
 
 const gamesGrid = document.getElementById('games-grid');
 const emptyState = document.getElementById('empty-state');
@@ -16,7 +9,8 @@ const closeModalBtn = document.getElementById('close-modal');
 const gameScreen = document.getElementById('game-screen');
 const filterButtons = document.querySelectorAll('.filter-btn');
 const leaderboardBtn = document.getElementById('leaderboard-btn');
-let lastFocusedEl = null; // elemento a devolver o foco quando o modal fechar
+const leaderboardLink = document.getElementById('leaderboard-link');
+let lastFocusedEl = null;
 
 function showModal() {
   lastFocusedEl = document.activeElement;
@@ -51,8 +45,9 @@ function renderGames() {
     const favActive = isFavorite(game.id);
 
     card.innerHTML = `
+      <button type="button" class="card-open" aria-label="Abrir ${game.name}"></button>
       ${game.recommended ? '<span class="card-badge">Recomendado</span>' : ''}
-      <button class="fav-btn ${favActive ? 'active' : ''}" data-fav="${game.id}" title="${favActive ? 'Remover dos favoritos' : 'Marcar como favorito'}" aria-pressed="${favActive}">
+      <button type="button" class="fav-btn ${favActive ? 'active' : ''}" data-fav="${game.id}" title="${favActive ? 'Remover dos favoritos' : 'Marcar como favorito'}" aria-label="${favActive ? 'Remover dos favoritos' : 'Marcar como favorito'}" aria-pressed="${favActive}">
         ${favActive ? '❤️' : '🤍'}
       </button>
       <div class="card-thumb">${game.icon}</div>
@@ -63,13 +58,14 @@ function renderGames() {
       </div>
     `;
 
-    card.addEventListener('click', () => openGame(game.id));
+    card.querySelector('.card-open').addEventListener('click', () => openGame(game.id));
 
-    const favBtn = card.querySelector('.fav-btn');
-    favBtn.addEventListener('click', (e) => {
-      e.stopPropagation(); // não abrir o jogo ao clicar no coração
+    card.querySelector('.fav-btn').addEventListener('click', e => {
+      e.stopPropagation();
       toggleFavorite(game.id);
-      renderGames(); // redesenha para atualizar ícone/filtro de favoritos
+      renderGames();
+      const again = gamesGrid.querySelector(`[data-fav="${game.id}"]`);
+      if (again) again.focus();
     });
 
     gamesGrid.appendChild(card);
@@ -77,22 +73,40 @@ function renderGames() {
 }
 
 function stopCurrentGame() {
-  if (currentGame && typeof currentGame.cleanup === 'function') {
-    currentGame.cleanup();
+  if (currentGame) {
+    try {
+      currentGame.unmount();
+    } catch (err) {
+      console.error(err);
+    }
   }
   currentGame = null;
 }
 
 function openGame(gameId) {
   stopCurrentGame();
-  const mod = window.GameModules && window.GameModules[gameId];
-  currentGame = mod || null;
+
+  const meta = GAMES_DATA.find(g => g.id === gameId);
+  const mod = GameRegistry.resolve(gameId);
+
+  modalContent.setAttribute('aria-label', meta ? meta.name : 'Janela do jogo');
+  gameScreen.innerHTML = '';
 
   if (!mod) {
     gameScreen.innerHTML = `<h2>🎮 Jogo em desenvolvimento...</h2>`;
   } else {
-    gameScreen.innerHTML = '';
-    mod.render(gameScreen);
+    currentGame = mod;
+    try {
+      mod.mount(gameScreen, GameRegistry.createContext(gameId, closeGame));
+      Store.recordPlay(gameId);
+    } catch (err) {
+      console.error(err);
+      stopCurrentGame();
+      gameScreen.innerHTML = `
+        <h2>⚠️ Este jogo não abriu</h2>
+        <p class="mini-note">Fecha a janela e tenta outra vez.</p>
+      `;
+    }
   }
 
   showModal();
@@ -104,10 +118,12 @@ function closeGame() {
 }
 
 closeModalBtn.addEventListener('click', closeGame);
-modal.addEventListener('click', (e) => {
-  if (e.target === modal) closeGame(); // clicar fora do conteúdo também fecha
+
+modal.addEventListener('click', e => {
+  if (e.target === modal) closeGame();
 });
-document.addEventListener('keydown', (e) => {
+
+document.addEventListener('keydown', e => {
   if (modal.classList.contains('hidden')) return;
 
   if (e.key === 'Escape') {
@@ -117,7 +133,7 @@ document.addEventListener('keydown', (e) => {
 
   if (e.key === 'Tab') {
     const focusable = modalContent.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
     );
     if (focusable.length === 0) return;
     const first = focusable[0];
@@ -135,9 +151,17 @@ document.addEventListener('keydown', (e) => {
 
 leaderboardBtn.addEventListener('click', () => {
   stopCurrentGame();
+  modalContent.setAttribute('aria-label', 'Placar');
   Leaderboard.renderPanelInto(gameScreen);
   showModal();
 });
+
+if (leaderboardLink) {
+  leaderboardLink.addEventListener('click', e => {
+    e.preventDefault();
+    leaderboardBtn.click();
+  });
+}
 
 filterButtons.forEach(btn => {
   btn.addEventListener('click', () => {
@@ -152,4 +176,5 @@ filterButtons.forEach(btn => {
   });
 });
 
+GameRegistry.audit();
 renderGames();
