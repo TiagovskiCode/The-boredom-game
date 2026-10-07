@@ -4,7 +4,7 @@
 
   if (track) {
     const names = GAMES_DATA.map(g => g.name);
-    track.innerHTML = names.concat(names).map(n => `<span>${escapeHtml(n)}</span>`).join('');
+    track.innerHTML = names.concat(names, names, names).map(n => `<span>${escapeHtml(n)}</span>`).join('');
   }
 
   if (!root) return;
@@ -18,7 +18,7 @@
   const reduceMotion = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const stage = document.getElementById('stage');
   const burst = document.getElementById('burst');
-  const hues = ['#00E5FF', '#FF2E88', '#39FF14', '#8A5CFF', '#FFD60A', '#FF5A1F'];
+  const hues = ['#FF6B5E', '#F5F5F0', '#3DDC84'];
   const shapes = ['▲', '●', '■', '◆'];
 
   if (burst) {
@@ -27,7 +27,7 @@
       const radius = k % 2 ? 230 : 160;
       const x = Math.round(Math.cos(angle) * radius);
       const y = Math.round(Math.sin(angle) * radius);
-      return `<span style="--x:${x}px;--y:${y}px;color:${hues[k % 6]};text-shadow:0 0 14px ${hues[k % 6]}">${shapes[k % 4]}</span>`;
+      return `<span style="--x:${x}px;--y:${y}px;color:${hues[k % hues.length]};text-shadow:0 0 14px ${hues[k % hues.length]}">${shapes[k % 4]}</span>`;
     }).join('');
   }
 
@@ -56,7 +56,6 @@
     const current = at(0);
     slotPrev.textContent = at(-1).name;
     slotCur.textContent = current.name;
-    slotCur.style.color = hues[GAMES_DATA.indexOf(current) % hues.length];
     slotNext.textContent = at(1).name;
     hint.textContent = `mín. ${current.minPlayers} jogador${current.minPlayers > 1 ? 'es' : ''} · ${current.desc}`;
     playBtn.textContent = `Jogar ${current.name}`;

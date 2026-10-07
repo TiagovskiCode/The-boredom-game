@@ -1,3 +1,5 @@
+const CATEGORY_LABELS = { festa: 'Festa', util: 'Utilitário' };
+
 let currentFilter = 'all';
 let currentGame = null;
 
@@ -50,11 +52,18 @@ function renderGames() {
       <button type="button" class="fav-btn ${favActive ? 'active' : ''}" data-fav="${game.id}" title="${favActive ? 'Remover dos favoritos' : 'Marcar como favorito'}" aria-label="${favActive ? 'Remover dos favoritos' : 'Marcar como favorito'}" aria-pressed="${favActive}">
         ${favActive ? '❤️' : '🤍'}
       </button>
-      <div class="card-thumb">${game.icon}</div>
+      <div class="card-thumb" aria-hidden="true">
+        ${GameCovers.get(game.id, game.icon)}
+        <span class="card-index">${String(GAMES_DATA.indexOf(game) + 1).padStart(2, '0')}<i>/${String(GAMES_DATA.length).padStart(2, '0')}</i></span>
+      </div>
       <div class="card-info">
         <h3>${game.name}</h3>
         <p>${game.desc}</p>
-        <span class="players-tag">👥 mín. ${game.minPlayers} jogador${game.minPlayers > 1 ? 'es' : ''}</span>
+        <div class="card-chips">
+          ${game.categories.map(c => `<span class="chip">${CATEGORY_LABELS[c] || c}</span>`).join('')}
+          ${game.duration ? `<span class="chip">${game.duration}</span>` : ''}
+        </div>
+        <span class="players-tag">mín. ${game.minPlayers} jogador${game.minPlayers > 1 ? 'es' : ''}</span>
       </div>
     `;
 

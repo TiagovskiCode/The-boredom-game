@@ -12,6 +12,7 @@ const GAMES_DATA = [
     desc: 'Perguntas para descobrir quem no grupo é capaz de quê.',
     categories: ['festa'],
     minPlayers: 2,
+    duration: '~10 min',
     recommended: true
   },
   {
@@ -21,6 +22,7 @@ const GAMES_DATA = [
     desc: 'Escrevam opções e deixem a sorte decidir o que vão fazer.',
     categories: ['util'],
     minPlayers: 1,
+    duration: '~1 min',
     recommended: false
   },
   {
@@ -30,6 +32,7 @@ const GAMES_DATA = [
     desc: 'Um de vocês não recebe a palavra secreta. Descubram quem é.',
     categories: ['festa'],
     minPlayers: 3,
+    duration: '~15 min',
     recommended: true
   },
   {
@@ -39,6 +42,7 @@ const GAMES_DATA = [
     desc: 'O clássico que nunca falha, com perguntas e desafios ao acaso.',
     categories: ['festa'],
     minPlayers: 2,
+    duration: '~15 min',
     recommended: true
   },
   {
@@ -48,6 +52,7 @@ const GAMES_DATA = [
     desc: 'Um desafio contra o relógio antes que o tempo se esgote.',
     categories: ['festa'],
     minPlayers: 1,
+    duration: '~2 min',
     recommended: false
   },
   {
@@ -57,6 +62,7 @@ const GAMES_DATA = [
     desc: 'Quem tem os reflexos mais rápidos do grupo?',
     categories: ['util'],
     minPlayers: 1,
+    duration: '~2 min',
     recommended: false
   },
   {
@@ -66,6 +72,7 @@ const GAMES_DATA = [
     desc: 'Sorteia uma letra e corre contra o tempo para preencher categorias.',
     categories: ['festa'],
     minPlayers: 2,
+    duration: '~5 min',
     recommended: true
   },
   {
@@ -75,6 +82,7 @@ const GAMES_DATA = [
     desc: 'Representa sem falar enquanto o grupo tenta adivinhar contra o tempo.',
     categories: ['festa'],
     minPlayers: 2,
+    duration: '~10 min',
     recommended: true
   },
   {
@@ -84,6 +92,7 @@ const GAMES_DATA = [
     desc: 'Descreve a palavra secreta sem dizeres as palavras proibidas.',
     categories: ['festa'],
     minPlayers: 3,
+    duration: '~10 min',
     recommended: false
   }
 ];

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#07070C">
+  <meta name="theme-color" content="#080A09">
   <title>The Boredom Game - Passatempos para Amigos</title>
   <meta name="description" content="Jogos rápidos para jogar em grupo com um só telemóvel: sorteios, rondas e placar, sem registo e sem instalar nada.">
   <meta property="og:title" content="The Boredom Game — Passatempos para Amigos">
@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <a class="skip-link" href="#jogos">Saltar para os jogos</a>
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
   <div class="ticker" aria-hidden="true">
     <div class="ticker-track" id="ticker-track"></div>
@@ -29,7 +31,7 @@
         <a href="#como">Níveis</a>
         <a href="#origem">Origem</a>
         <a href="#" id="leaderboard-link">Placar</a>
-        <button class="btn rgb-border cut" id="leaderboard-btn">
+        <button class="btn nav-chip" id="leaderboard-btn">
           <span id="leaderboard-label">🏆 Placar</span>
         </button>
       </nav>
@@ -38,6 +40,8 @@
 
   <main id="topo">
     <section class="hero">
+      <div class="hero-watermark" aria-hidden="true">BOREDOM</div>
+      <div class="hero-inner">
       <div class="hero-copy">
         <div class="press-start"><i aria-hidden="true"></i>PRESS START</div>
         <h1 class="hero-title">A noite ainda <em class="rgb-text">não acabou.</em></h1>
@@ -67,6 +71,8 @@
           </div>
         </div>
       </div>
+      </div>
+      <a class="scroll-cue" href="#jogadores">Desce para jogar ↓</a>
     </section>
 
     <section class="facts">
@@ -151,7 +157,19 @@
   </div>
 
   <footer class="site-footer">
-    <p>THE BOREDOM GAME · feito para noites sem telemóvel na mão</p>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo">THE BOREDOM GAME</span>
+        <p>Jogos para o grupo todo, num só telemóvel.</p>
+      </div>
+      <nav class="footer-links" aria-label="Rodapé">
+        <a href="#jogos">Jogos</a>
+        <a href="#como">Níveis</a>
+        <a href="#origem">Origem</a>
+        <a href="#topo">Voltar ao topo ↑</a>
+      </nav>
+      <p class="footer-credit">Feito por Tiago Teixeira e Gabriel · para noites sem telemóvel na mão</p>
+    </div>
   </footer>
 
   <script src="js/data.js" defer></script>
@@ -171,6 +189,8 @@
   <script src="js/games/palavra-proibida.js" defer></script>
   <script src="js/stats.js" defer></script>
   <script src="js/roulette.js" defer></script>
+  <script src="js/covers.js" defer></script>
   <script src="js/hub.js" defer></script>
+  <script src="js/nav.js" defer></script>
 </body>
 </html>
