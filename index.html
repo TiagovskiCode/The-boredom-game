@@ -84,6 +84,21 @@
       </div>
     </section>
 
+    <div class="led-strip" aria-hidden="true"></div>
+
+    <section class="featured" id="destaque" data-featured="impostor">
+      <div class="featured-card">
+        <div class="featured-cover" id="featured-cover" aria-hidden="true"></div>
+        <div class="featured-body">
+          <span class="featured-tag">EM DESTAQUE</span>
+          <h2 class="featured-title" id="featured-title"></h2>
+          <p class="featured-desc" id="featured-desc"></p>
+          <div class="card-chips" id="featured-chips"></div>
+          <button class="btn btn-fill rgb-fill cut featured-play" id="featured-play">▶ Jogar agora</button>
+        </div>
+      </div>
+    </section>
+
     <section class="players-panel" id="jogadores">
       <h2 class="section-title">Quem joga hoje?</h2>
       <p class="section-sub">Escreve os nomes do grupo. Junta ou tira amigos a qualquer momento: a roleta e o catálogo ajustam-se.</p>
@@ -110,6 +125,18 @@
 
       <div class="games-grid" id="games-grid">
         <p class="empty-state" id="empty-state">Nenhum jogo encontrado para este filtro.</p>
+      </div>
+    </section>
+
+    <section class="scoreboard" id="placar-ao-vivo">
+      <div class="scoreboard-copy">
+        <h2 class="section-title">Placar da <span class="rgb-text">noite</span></h2>
+        <p class="section-sub">Cada ronda soma pontos. Aqui vês quem lidera, ao vivo, sem abrir nenhum jogo.</p>
+        <button class="btn rgb-border cut scoreboard-open" id="scoreboard-open">Abrir placar completo</button>
+      </div>
+      <div class="scoreboard-panel">
+        <div class="rgb-line" aria-hidden="true"></div>
+        <div id="scoreboard-list" aria-live="polite"></div>
       </div>
     </section>
 
@@ -140,6 +167,38 @@
       </div>
     </section>
 
+    <div class="led-strip" aria-hidden="true"></div>
+
+    <section class="faq" id="faq">
+      <h2 class="section-title">Perguntas <span class="rgb-text">frequentes</span></h2>
+      <div class="faq-list">
+        <details>
+          <summary>Preciso de criar conta?</summary>
+          <p>Não. Não há registo nem nada para instalar: abres a página, juntas os nomes e jogas.</p>
+        </details>
+        <details>
+          <summary>Quantos jogadores são precisos?</summary>
+          <p>Depende do jogo. Cada cartão mostra o mínimo, entre 1 e 3 jogadores, e a roleta só sorteia jogos que o grupo atual consegue jogar.</p>
+        </details>
+        <details>
+          <summary>O que acontece se eu recarregar a página?</summary>
+          <p>Os jogadores, os pontos e os favoritos ficam guardados no teu browser, por isso a noite continua onde a deixaste.</p>
+        </details>
+        <details>
+          <summary>Os pontos contam entre jogos?</summary>
+          <p>Sim. Há um só placar por sessão, que soma as rondas de todos os jogos.</p>
+        </details>
+        <details>
+          <summary>Funciona sem internet?</summary>
+          <p>Ainda não garantimos. As fontes e o estilo carregam da internet na primeira visita, e o modo totalmente offline ainda não está feito.</p>
+        </details>
+        <details>
+          <summary>Quem fez o The Boredom Game?</summary>
+          <p>O Tiago e o Gabriel, dois amigos que queriam algo para jogar quando já ninguém sabe o que fazer.</p>
+        </details>
+      </div>
+    </section>
+
     <section class="final-cta">
       <div class="final-cta-box">
         <h2>Já ninguém sabe o que fazer <span class="rgb-text">depois das onze.</span></h2>
@@ -166,6 +225,7 @@
         <a href="#jogos">Jogos</a>
         <a href="#como">Níveis</a>
         <a href="#origem">Origem</a>
+        <a href="#faq">Perguntas</a>
         <a href="#topo">Voltar ao topo ↑</a>
       </nav>
       <p class="footer-credit">Feito por Tiago Teixeira e Gabriel · para noites sem telemóvel na mão</p>
@@ -190,6 +250,7 @@
   <script src="js/stats.js" defer></script>
   <script src="js/roulette.js" defer></script>
   <script src="js/covers.js" defer></script>
+  <script src="js/sections.js" defer></script>
   <script src="js/hub.js" defer></script>
   <script src="js/nav.js" defer></script>
 </body>
