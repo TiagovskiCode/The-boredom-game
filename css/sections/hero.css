@@ -1,0 +1,258 @@
+/* ============================================================
+   hero.css — Topo da página: carrossel + cena 3D (Three.js)
+   ============================================================ */
+
+.hero {
+  --hero-color: var(--accent);   /* muda a cada slide (js/hero.js) */
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: max(640px, 100vh);
+  min-height: max(640px, 100svh);
+  padding-block: calc(var(--header-h) + var(--space-6)) var(--space-8);
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(60% 70% at 75% 45%, color-mix(in srgb, var(--hero-color) 18%, transparent), transparent 70%),
+    radial-gradient(40% 50% at 10% 100%, var(--blue-soft), transparent 70%),
+    var(--bg);
+  transition: background var(--dur-slow);
+}
+
+/* Canvas do Three.js ocupa o hero todo */
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+}
+
+/* Escurece a esquerda (texto) e a base (transição para a página) */
+.hero-shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, var(--bg) 0%, rgba(7, 9, 10, 0.75) 30%, transparent 62%),
+    linear-gradient(0deg, var(--bg) 0%, transparent 28%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative;
+}
+
+.hero-copy {
+  display: grid;
+  gap: var(--space-5);
+  max-width: 600px;
+}
+
+.hero-copy .eyebrow {
+  color: var(--hero-color);
+}
+
+.hero-title {
+  font-size: var(--fs-hero);
+  font-weight: 800;
+  line-height: 0.92;
+  text-wrap: balance;
+}
+
+.hero-title .text-accent {
+  color: var(--hero-color);
+}
+
+.hero-desc {
+  max-width: 48ch;
+  font-size: var(--fs-lg);
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.hero-meta:empty {
+  display: none;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+/* O botão principal segue a cor do slide */
+.hero-actions .btn-primary {
+  background: var(--hero-color);
+}
+
+/* ---------- Setas ---------- */
+
+.hero-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  background: rgba(7, 9, 10, 0.5);
+  backdrop-filter: blur(8px);
+  color: var(--text);
+  transform: translateY(-50%);
+  transition: background var(--dur-fast), border-color var(--dur-fast);
+}
+
+.hero-arrow svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hero-arrow:hover {
+  border-color: var(--hero-color);
+  background: rgba(7, 9, 10, 0.85);
+}
+
+.hero-arrow.is-prev { left: var(--space-4); }
+.hero-arrow.is-next { right: var(--space-4); }
+
+/* ---------- Pontos (barras) ---------- */
+
+.hero-dots {
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-6);
+  z-index: 2;
+  display: flex;
+  gap: var(--space-2);
+  transform: translateX(-50%);
+}
+
+.hero-dot {
+  position: relative;
+  width: 28px;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--line-strong);
+  transition: width var(--dur-med) var(--ease-out);
+}
+
+/* Área de clique maior que a barra */
+.hero-dot::before {
+  content: '';
+  position: absolute;
+  inset: -12px -4px;
+}
+
+.hero-dot[aria-selected='true'] {
+  width: 56px;
+}
+
+/* Barra que enche durante o autoplay */
+.hero-dot i {
+  position: absolute;
+  inset: 0;
+  background: var(--hero-color);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.hero-dot[aria-selected='true'] i {
+  animation: hero-dot-fill var(--hero-interval, 7s) linear forwards;
+}
+
+.hero.is-paused .hero-dot[aria-selected='true'] i {
+  animation-play-state: paused;
+}
+
+@keyframes hero-dot-fill {
+  to { transform: scaleX(1); }
+}
+
+/* ---------- Dica de interação com o 3D ---------- */
+
+.hero-hint {
+  position: absolute;
+  right: var(--gutter);
+  bottom: var(--space-6);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: rgba(7, 9, 10, 0.55);
+  backdrop-filter: blur(8px);
+  color: var(--text-dim);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  pointer-events: none;
+  animation: hint-float 3s ease-in-out infinite;
+}
+
+.hero-hint svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--hero-color);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes hint-float {
+  50% { transform: translateY(-4px); }
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 960px) {
+  .hero {
+    align-items: flex-end;
+  }
+
+  .hero-shade {
+    background:
+      linear-gradient(0deg, var(--bg) 8%, rgba(7, 9, 10, 0.7) 50%, transparent 85%);
+  }
+
+  .hero-arrow {
+    top: auto;
+    bottom: var(--space-5);
+    transform: none;
+    width: 40px;
+    height: 40px;
+  }
+
+  .hero-dots {
+    bottom: calc(var(--space-5) + 18px);
+  }
+
+  .hero-hint {
+    top: calc(var(--header-h) + var(--space-3));
+    bottom: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero-actions .btn-lg {
+    width: 100%;
+  }
+}

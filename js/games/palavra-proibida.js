@@ -12,6 +12,10 @@ window.GameModules['palavra-proibida'] = {
   timeLimit: 45,
   timerId: null,
 
+  cleanup() {
+    clearInterval(this.timerId);
+  },
+
   cards: [
     { word: 'Praia', forbidden: ['Areia', 'Mar', 'Sol', 'Água'] },
     { word: 'Futebol', forbidden: ['Bola', 'Golo', 'Campo', 'Jogador'] },
@@ -41,11 +45,12 @@ window.GameModules['palavra-proibida'] = {
   ],
 
   render(container) {
+    clearInterval(this.timerId);
     if (Players.count() < 3) {
       container.innerHTML = `
         <div class="game-screen">
           <h2>🚫 Palavra Proibida</h2>
-          <p style="margin-top:1rem;">Precisas de pelo menos <strong>3 jogadores</strong> adicionados no topo da página para jogar.</p>
+          <p class="game-lead">Precisas de pelo menos <strong>3 jogadores</strong> adicionados na secção "Quem joga hoje?" para jogar.</p>
         </div>
       `;
       return;
@@ -59,13 +64,14 @@ window.GameModules['palavra-proibida'] = {
   },
 
   renderIntro(container) {
-    const { player } = this.session;
+    const player = escapeHtml(this.session.player);
     container.innerHTML = `
       <div class="game-screen">
-        <h2>🚫 Palavra Proibida</h2>
-        <p style="margin-top:1rem;">Passa o telemóvel a <strong class="highlight">${player}</strong>.</p>
+        <span class="game-tag">🚫 Palavra Proibida</span>
+        <h2>Passa o telemóvel a</h2>
+        <p class="chosen-player">${player}</p>
         <p class="mini-note">Só ${player} deve ver as cartas. Os outros vão tentar adivinhar pelas pistas.</p>
-        <button class="game-btn" id="show-card">Sou ${player}, mostrar a minha carta</button>
+        <button class="game-btn" id="show-card">Sou ${player}, estou pronto(a)</button>
       </div>
     `;
     container.querySelector('#show-card').addEventListener('click', () => this.showCard(container));
@@ -75,8 +81,9 @@ window.GameModules['palavra-proibida'] = {
     this.session.card = this.bag.next();
     container.innerHTML = `
       <div class="game-screen">
-        <h2>🚫 Palavra Proibida</h2>
-        <p class="mini-note">Quando estiveres pronto(a) para descrever, começa o cronómetro.</p>
+        <span class="game-tag">🚫 Palavra Proibida</span>
+        <h2>Tens ${this.timeLimit} segundos</h2>
+        <p class="game-lead">Descreve o máximo de palavras que conseguires sem dizer as proibidas. Se disseres uma, carrega em "Disse proibida".</p>
         <button class="game-btn" id="start-pp">Começar (${this.timeLimit}s) ➔</button>
       </div>
     `;
@@ -90,7 +97,7 @@ window.GameModules['palavra-proibida'] = {
       const timerEl = container.querySelector('#timer');
       if (timerEl) {
         timerEl.textContent = `${this.session.timeLeft}s`;
-        if (this.session.timeLeft <= 10) timerEl.style.color = '#ffa502';
+        timerEl.classList.toggle('is-warning', this.session.timeLeft <= 10);
       }
       if (this.session.timeLeft <= 0) {
         clearInterval(this.timerId);
@@ -103,14 +110,15 @@ window.GameModules['palavra-proibida'] = {
     const { card, correct, fouls, timeLeft } = this.session;
     container.innerHTML = `
       <div class="game-screen">
-        <h2>🚫 Descreve: <span class="highlight">${card.word}</span></h2>
-        <p class="mini-note" style="margin:0.5rem 0 1rem;">Proibido dizer: ${card.forbidden.join(', ')}</p>
-        <div style="font-size:2.5rem; font-weight:bold; color:#ff4757;" id="timer">${timeLeft}s</div>
-        <p class="mini-note" style="margin:0.5rem 0 1rem;">✅ ${correct} acertos · 🚫 ${fouls} falta${fouls === 1 ? '' : 's'}</p>
-        <div style="display:flex; gap:0.6rem; justify-content:center; flex-wrap:wrap;">
+        <span class="game-tag">Descreve</span>
+        <p class="big-word">${card.word}</p>
+        <div class="word-chips" aria-label="Palavras proibidas">${card.forbidden.map(w => `<span>${w}</span>`).join('')}</div>
+        <div class="game-timer ${timeLeft <= 10 ? 'is-warning' : ''}" id="timer">${timeLeft}s</div>
+        <p class="stat-line"><span class="chip">✅ ${correct} acertos</span><span class="chip">🚫 ${fouls} falta${fouls === 1 ? '' : 's'}</span></p>
+        <div class="btn-row">
           <button class="game-btn" id="got-it">✅ Acertaram!</button>
           <button class="game-btn secondary" id="skip-card">⏭️ Passar</button>
-          <button class="game-btn secondary" id="foul-card">🚫 Disse Proibida</button>
+          <button class="game-btn danger" id="foul-card">🚫 Disse proibida</button>
         </div>
       </div>
     `;
@@ -131,9 +139,9 @@ window.GameModules['palavra-proibida'] = {
     container.innerHTML = `
       <div class="game-screen">
         <h2>⏰ Tempo esgotado!</h2>
-        <p style="margin:1rem 0; font-size:1.2rem;"><strong class="highlight">${player}</strong> acertou <strong style="color:#2ed573;">${correct}</strong> e teve <strong style="color:#ff4757;">${fouls}</strong> falta${fouls === 1 ? '' : 's'}.</p>
-        ${points > 0 ? `<p class="mini-note">+${points} pts adicionados ao Placar global.</p>` : '<p class="mini-note">Sem pontos nesta ronda.</p>'}
-        <button class="game-btn" id="next-pp">Próxima Ronda ➔</button>
+        <p class="game-lead"><strong class="highlight">${escapeHtml(player)}</strong> fez adivinhar <strong class="text-success">${correct}</strong> e teve <strong class="text-danger">${fouls}</strong> falta${fouls === 1 ? '' : 's'}.</p>
+        ${points > 0 ? `<p class="mini-note">+${points} pts adicionados ao placar da noite.</p>` : '<p class="mini-note">Sem pontos nesta ronda.</p>'}
+        <button class="game-btn" id="next-pp">Próxima ronda ➔</button>
       </div>
     `;
     container.querySelector('#next-pp').addEventListener('click', () => this.render(container));

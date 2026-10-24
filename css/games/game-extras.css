@@ -1,0 +1,369 @@
+/* ============================================================
+   game-extras.css — Peças específicas de cada jogo
+   Cada bloco diz em que jogo é usado.
+   ============================================================ */
+
+/* ---------- Teste de Reação: zona que pisca ---------- */
+.reaction-zone {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 220px;
+  border-radius: var(--r-lg);
+  background: var(--surface-2);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  transition: background 50ms;
+}
+
+/* ---------- Roleta de Decisão: roda em canvas ---------- */
+.wheel-wrap {
+  position: relative;
+  margin-block: var(--space-2);
+}
+
+.wheel-wrap canvas {
+  width: min(280px, 70vw);
+  height: auto;
+  border-radius: 50%;
+  box-shadow: 0 0 0 6px var(--surface-2), 0 0 40px var(--accent-soft);
+}
+
+.wheel-pointer {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 24px solid var(--accent);
+  transform: translateX(-50%);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+}
+
+/* ---------- Mais ou Menos: carta de jogar ---------- */
+.card-table {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  perspective: 900px;
+}
+
+.playing-card {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 130px;
+  aspect-ratio: 5 / 7;
+  border-radius: var(--r-md);
+  background: var(--text);
+  color: var(--bg);
+  font-family: var(--font-display);
+  box-shadow: var(--shadow-md);
+  animation: card-flip var(--dur-slow) var(--ease-out);
+}
+
+.playing-card.is-red {
+  color: var(--danger);
+}
+
+.playing-card b {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.playing-card span {
+  position: absolute;
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.playing-card span:first-of-type { top: 10px; left: 12px; }
+.playing-card span:last-of-type { right: 12px; bottom: 10px; transform: rotate(180deg); }
+
+/* Verso da carta (a próxima, ainda escondida) */
+.playing-card.is-back {
+  background:
+    repeating-linear-gradient(45deg, var(--accent) 0 6px, var(--accent-strong) 6px 12px);
+  color: var(--accent-ink);
+  animation: none;
+}
+
+.playing-card.is-back b {
+  font-size: 3rem;
+}
+
+@keyframes card-flip {
+  from { transform: rotateY(90deg); }
+}
+
+/* ---------- Batata Quente: bomba ---------- */
+.bomb {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--surface-3), var(--bg) 70%);
+  box-shadow: inset -10px -14px 30px rgba(0, 0, 0, 0.7), 0 0 50px var(--danger-soft);
+  font-size: 3.5rem;
+  animation: bomb-wobble 0.9s ease-in-out infinite;
+}
+
+/* Rastilho com faísca */
+.bomb::before {
+  content: '';
+  position: absolute;
+  top: -22px;
+  right: 22px;
+  width: 6px;
+  height: 34px;
+  border-radius: 3px;
+  background: var(--warning);
+  transform: rotate(30deg);
+}
+
+.bomb::after {
+  content: '';
+  position: absolute;
+  top: -32px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--warning);
+  box-shadow: 0 0 18px 6px var(--warning);
+  animation: spark 0.2s infinite alternate;
+}
+
+.bomb.is-fast {
+  animation-duration: 0.35s;
+}
+
+@keyframes bomb-wobble {
+  0%, 100% { transform: rotate(-6deg) scale(1); }
+  50% { transform: rotate(6deg) scale(1.05); }
+}
+
+@keyframes spark {
+  to { transform: scale(0.6); opacity: 0.6; }
+}
+
+/* Ecrã a tremer quando a bomba rebenta */
+.is-shaking {
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+
+.boom-text {
+  color: var(--danger);
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 3rem + 6vw, 7rem);
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 0 40px var(--danger);
+  animation: pop-in var(--dur-slow) var(--ease-back);
+}
+
+/* ---------- Desenha e Adivinha ---------- */
+.draw-board {
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  background: var(--text);
+  touch-action: none;
+}
+
+.draw-board canvas {
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+.draw-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.swatch {
+  width: 34px;
+  height: 34px;
+  border: 3px solid var(--surface-3);
+  border-radius: 50%;
+  background: var(--swatch);
+  transition: transform var(--dur-fast) var(--ease-back);
+}
+
+.swatch.is-active {
+  border-color: var(--accent);
+  transform: scale(1.15);
+}
+
+/* ---------- Cronómetro Cego ---------- */
+.stopwatch {
+  display: grid;
+  place-items: center;
+  width: 220px;
+  height: 220px;
+  border: 3px solid var(--line-strong);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--surface-2), var(--bg));
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 2.6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6);
+}
+
+.stopwatch.is-running {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6), 0 0 40px var(--accent-soft);
+}
+
+.stopwatch.is-hidden-time {
+  color: var(--text-mute);
+}
+
+/* ---------- Quiz Relâmpago ---------- */
+.quiz-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 560px;
+}
+
+.quiz-option {
+  min-height: 64px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 600;
+  text-align: left;
+  transition: border-color var(--dur-fast), background var(--dur-fast), transform var(--dur-fast);
+}
+
+.quiz-option:hover:not(:disabled) {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.quiz-option.is-correct {
+  border-color: var(--success);
+  background: rgba(61, 220, 132, 0.18);
+}
+
+.quiz-option.is-wrong {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.quiz-option:disabled {
+  cursor: default;
+}
+
+.time-bar {
+  width: 100%;
+  max-width: 560px;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--surface-3);
+}
+
+.time-bar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--warning));
+  transform-origin: left;
+}
+
+@media (max-width: 480px) {
+  .quiz-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Sorteador: equipas e ordem ---------- */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.team-card {
+  --team-color: var(--accent);
+  padding: var(--space-4);
+  border: 1px solid var(--team-color);
+  border-radius: var(--r-lg);
+  background: color-mix(in srgb, var(--team-color) 12%, transparent);
+  text-align: left;
+  animation: pop-in var(--dur-slow) var(--ease-back) backwards;
+}
+
+.team-card h3 {
+  margin-bottom: var(--space-2);
+  color: var(--team-color);
+  font-size: var(--fs-xl);
+}
+
+.team-card li {
+  padding: var(--space-1) 0;
+  color: var(--text);
+}
+
+.order-list {
+  display: grid;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 360px;
+  counter-reset: order;
+}
+
+.order-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 600;
+  text-align: left;
+  animation: screen-in var(--dur-med) var(--ease-out) backwards;
+}
+
+.order-list li::before {
+  counter-increment: order;
+  content: counter(order, decimal-leading-zero);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-weight: 700;
+}

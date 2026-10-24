@@ -1,4 +1,7 @@
 const Players = (() => {
+  // Cores dos avatares (a mesma pessoa tem sempre a mesma cor)
+  const AVATAR_COLORS = ['#A6FF3D', '#FF3D7F', '#3DA5FF', '#FFB020', '#9B6BFF', '#3DE0D0', '#FF7AD9', '#FF8A3D'];
+
   const add = rawName => Store.addPlayer(rawName);
   const remove = name => Store.removePlayer(name);
   const getAll = () => Store.getPlayers();
@@ -15,12 +18,25 @@ const Players = (() => {
     return shuffle(Store.getPlayers()).slice(0, Math.max(0, n));
   }
 
+  function colorFor(name) {
+    let hash = 0;
+    for (const ch of String(name).toLowerCase()) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
+    return AVATAR_COLORS[hash % AVATAR_COLORS.length];
+  }
+
+  // HTML do círculo com a inicial — usado também no placar
+  function avatar(name) {
+    const initial = escapeHtml(String(name).trim().charAt(0).toUpperCase() || '?');
+    return `<span class="player-avatar" style="--avatar-color:${colorFor(name)}" aria-hidden="true">${initial}</span>`;
+  }
+
   function render() {
     const container = document.getElementById('players-list');
     if (!container) return;
 
     container.innerHTML = Store.getPlayers().map(p => `
       <span class="player-tag">
+        ${avatar(p)}
         ${escapeHtml(p)}
         <button type="button" class="remove-player" data-name="${escapeHtml(p)}" aria-label="Remover ${escapeHtml(p)}" title="Remover ${escapeHtml(p)}">&times;</button>
       </span>
@@ -66,5 +82,5 @@ const Players = (() => {
     init();
   }
 
-  return { add, remove, getAll, count, getRandom, getRandomMany, render };
+  return { add, remove, getAll, count, getRandom, getRandomMany, render, avatar, colorFor };
 })();

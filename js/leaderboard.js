@@ -11,14 +11,14 @@ const Leaderboard = (() => {
     const label = document.getElementById('leaderboard-label');
     if (!label) return;
     const top = getScores().find(s => s.points > 0);
-    label.textContent = top ? `🏆 ${top.player}` : '🏆 Placar';
+    label.textContent = top ? `${top.player} · ${top.points}` : 'Placar';
   }
 
   function flashPoints(player, points) {
     const toast = document.createElement('div');
     toast.className = 'points-toast';
     toast.setAttribute('role', 'status');
-    toast.textContent = `+${points} ${player}`;
+    toast.textContent = `${points > 0 ? '+' : ''}${points} ${player}`;
     document.body.appendChild(toast);
     requestAnimationFrame(() => toast.classList.add('show'));
     setTimeout(() => {
@@ -32,9 +32,10 @@ const Leaderboard = (() => {
 
     target.innerHTML = `
       <div class="game-screen">
-        <h2>🏆 Placar</h2>
+        <span class="game-tag">Ao vivo</span>
+        <h2>🏆 Placar da noite</h2>
         ${scoresList.length === 0
-          ? '<p class="mini-note">Ainda ninguém pontuou. Joga uma ronda de um jogo com pontos (ex: Blitz ou Teste de Reação)!</p>'
+          ? '<p class="mini-note">Ainda ninguém pontuou. Joga uma ronda de um jogo com pontos (ex: Quiz Relâmpago ou Teste de Reação)!</p>'
           : `<div class="option-list">
               ${scoresList.map((s, i) => `
                 <div class="option-row">
@@ -44,7 +45,7 @@ const Leaderboard = (() => {
               `).join('')}
             </div>`
         }
-        <button class="game-btn secondary" id="reset-leaderboard">Reiniciar Placar</button>
+        <button class="game-btn secondary" id="reset-leaderboard">Reiniciar placar</button>
       </div>
     `;
 

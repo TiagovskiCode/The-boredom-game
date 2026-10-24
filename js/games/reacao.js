@@ -2,28 +2,36 @@
 // reacao.js — Teste de Reação
 // Cada jogador, à vez, recebe uma cor-alvo. O ecrã vai piscando
 // várias cores (algumas a tentar enganar) até a cor-alvo
-// aparecer — só aí é que deves clicar. Clicar na cor errada ou
-// não clicar a tempo faz-te perder a ronda. No fim, o mais
-// rápido a acertar ganha mais pontos no Placar global.
+// aparecer — só aí é que deves tocar. Tocar na cor errada ou
+// não tocar a tempo faz-te perder a ronda. No fim, o mais
+// rápido a acertar ganha mais pontos no placar.
 // ============================================================
 
 window.GameModules = window.GameModules || {};
 
 window.GameModules.reacao = {
   colors: [
-    { name: 'vermelho', hex: '#ff4757' },
-    { name: 'verde', hex: '#2ed573' },
-    { name: 'azul', hex: '#3742fa' },
-    { name: 'laranja', hex: '#ffa502' },
-    { name: 'amarelo', hex: '#eccc68' },
-    { name: 'rosa', hex: '#ff6b81' },
-    { name: 'roxo', hex: '#a55eea' }
+    { name: 'vermelho', hex: '#FF4D5E' },
+    { name: 'verde', hex: '#3DDC84' },
+    { name: 'azul', hex: '#3D6BFF' },
+    { name: 'laranja', hex: '#FF8A3D' },
+    { name: 'amarelo', hex: '#FFE03D' },
+    { name: 'rosa', hex: '#FF7AD9' },
+    { name: 'roxo', hex: '#9B6BFF' }
   ],
+  idleColor: '#1A1F24',
 
   results: [],
   flashTimeoutId: null,
+  nextTurnId: null,
+
+  cleanup() {
+    clearTimeout(this.flashTimeoutId);
+    clearTimeout(this.nextTurnId);
+  },
 
   render(container) {
+    this.cleanup();
     this.results = [];
     this.playerQueue = Players.count() > 0 ? Players.getAll() : ['Jogador 1'];
     this.currentIndex = 0;
@@ -39,18 +47,12 @@ window.GameModules.reacao = {
 
     container.innerHTML = `
       <div class="game-screen">
-        <h2>💥 Teste de Reação</h2>
-        <p style="margin-top:1rem;">Vez de: <strong class="highlight">${player}</strong></p>
-        <p style="margin:0.5rem 0 1rem; font-size:1.1rem;">
-          Clica quando aparecer <strong style="color:${target.hex};">${target.name.toUpperCase()}</strong>. Cuidado com as cores falsas 😏
+        <span class="game-tag">💥 Teste de Reação · ${this.currentIndex + 1}/${this.playerQueue.length}</span>
+        <h2>Vez de <span class="highlight">${escapeHtml(player)}</span></h2>
+        <p class="game-lead">
+          Toca quando aparecer <strong style="color:${target.hex}">${target.name.toUpperCase()}</strong>. Cuidado com as cores falsas 😏
         </p>
-        <div id="reaction-zone" style="
-          margin-top:0.5rem; height:200px; border-radius:12px;
-          background:#2B2D42; display:flex; align-items:center; justify-content:center;
-          font-size:1.3rem; font-weight:bold; cursor:pointer; user-select:none; color:#fff;
-          transition:background 0.05s;">
-          Clica para começar
-        </div>
+        <div id="reaction-zone" class="reaction-zone" role="button" tabindex="0">Toca para começar</div>
       </div>
     `;
 
@@ -90,19 +92,19 @@ window.GameModules.reacao = {
       this.flashTimeoutId = setTimeout(() => {
         awaiting = false;
         if (isTarget) {
-          finish('falhou', null); // passou a cor-alvo e não clicou
+          finish('falhou', null); // passou a cor-alvo e não tocou
           return;
         }
-        zone.style.background = '#2B2D42';
+        zone.style.background = this.idleColor;
         zone.textContent = '';
         this.flashTimeoutId = setTimeout(doFlash, 250 + Math.random() * 200);
       }, flashDuration);
     };
 
-    zone.addEventListener('click', () => {
+    const onHit = () => {
       if (!started) {
         started = true;
-        zone.style.background = '#2B2D42';
+        zone.style.background = this.idleColor;
         zone.textContent = 'Prepara-te...';
         this.flashTimeoutId = setTimeout(doFlash, 900);
         return;
@@ -114,7 +116,16 @@ window.GameModules.reacao = {
         const reactionMs = Math.round(performance.now() - flashStart);
         finish('acertou', reactionMs);
       } else {
-        finish('errado', null); // clicou numa cor falsa ou fora de tempo
+        finish('errado', null); // tocou numa cor falsa ou fora de tempo
+      }
+    };
+
+    // pointerdown reage mais depressa do que click (sobretudo no telemóvel)
+    zone.addEventListener('pointerdown', onHit);
+    zone.addEventListener('keydown', e => {
+      if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        onHit();
       }
     });
   },
@@ -122,12 +133,12 @@ window.GameModules.reacao = {
   showTurnResult(container, status, reactionMs) {
     const zone = container.querySelector('#reaction-zone');
     if (zone) {
-      zone.style.background = status === 'acertou' ? '#2ed573' : '#ff4757';
+      zone.style.background = status === 'acertou' ? '#3DDC84' : '#FF4D5E';
       zone.textContent = status === 'acertou'
         ? `${reactionMs} ms`
-        : (status === 'errado' ? 'Cor errada!' : 'Não clicaste a tempo!');
+        : (status === 'errado' ? 'Cor errada!' : 'Não tocaste a tempo!');
     }
-    setTimeout(() => this.nextTurn(container), 1200);
+    this.nextTurnId = setTimeout(() => this.nextTurn(container), 1200);
   },
 
   nextTurn(container) {
@@ -157,20 +168,18 @@ window.GameModules.reacao = {
     container.innerHTML = `
       <div class="game-screen">
         <h2>🏆 Resultados</h2>
-        <div class="option-list" style="margin-top:1rem;">
+        <div class="option-list">
           ${rows.map(r => `
             <div class="option-row">
-              <span style="flex:1; padding:0.5rem; background:#0F1017; border-radius:6px;">
-                ${r.rankIcon || '❌'} ${r.player}
-              </span>
-              <span style="padding:0.5rem;">
-                ${r.status === 'acertou' ? `${r.reactionMs} ms` : (r.status === 'errado' ? 'Cor errada' : 'Sem clique')}
+              <span class="row-label">${r.rankIcon || '❌'} ${escapeHtml(r.player)}</span>
+              <span class="row-points ${r.status === 'acertou' ? '' : 'is-muted'}">
+                ${r.status === 'acertou' ? `${r.reactionMs} ms` : (r.status === 'errado' ? 'Cor errada' : 'Sem toque')}
               </span>
             </div>
           `).join('')}
         </div>
-        <p class="mini-note">Pontos já adicionados ao Placar global.</p>
-        <button class="game-btn" id="restart-reaction">Jogar Outra Vez ➔</button>
+        <p class="mini-note">Pontos já adicionados ao placar da noite.</p>
+        <button class="game-btn" id="restart-reaction">Jogar outra vez ➔</button>
       </div>
     `;
 

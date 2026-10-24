@@ -1,0 +1,49 @@
+/* ============================================================
+   tilt.css — Efeito 3D de inclinação com o rato
+   Qualquer elemento com o atributo data-tilt inclina-se.
+   O js/motion.js atualiza --rx, --ry (rotação) e --mx, --my
+   (posição do brilho). Sem JS, nada acontece.
+   ============================================================ */
+
+[data-tilt] {
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 50%;
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  transition: transform var(--dur-slow) var(--ease-out);
+  will-change: transform;
+}
+
+/* Enquanto o rato está em cima, segue-o sem atraso */
+[data-tilt].is-tilting {
+  transition: transform 80ms linear;
+}
+
+/* Reflexo de luz que segue o rato */
+[data-tilt]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: radial-gradient(400px circle at var(--mx) var(--my), rgba(255, 255, 255, 0.09), transparent 45%);
+  opacity: 0;
+  transition: opacity var(--dur-med);
+  pointer-events: none;
+}
+
+[data-tilt].is-tilting::after {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  [data-tilt] {
+    transform: none;
+  }
+}
+
+.motion-off [data-tilt] {
+  transform: none;
+}

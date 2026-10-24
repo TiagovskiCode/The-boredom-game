@@ -1,0 +1,50 @@
+/* ============================================================
+   final-cta.css — Caixa final com cena 3D atrás
+   ============================================================ */
+
+.cta-box {
+  position: relative;
+  display: grid;
+  align-items: center;
+  min-height: 420px;
+  overflow: hidden;
+  isolation: isolate;
+  padding: var(--space-7) var(--space-6);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-xl);
+  background:
+    radial-gradient(60% 90% at 80% 50%, var(--accent-soft), transparent 70%),
+    linear-gradient(135deg, var(--surface-2), var(--bg));
+}
+
+.cta-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+}
+
+.cta-copy {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-4);
+  max-width: 560px;
+}
+
+.cta-copy h2 {
+  font-size: var(--fs-3xl);
+}
+
+.cta-copy p {
+  color: var(--text);
+  font-size: var(--fs-xl);
+}
+
+@media (max-width: 640px) {
+  .cta-box {
+    align-items: end;
+    min-height: 480px;
+    padding: var(--space-5);
+  }
+}

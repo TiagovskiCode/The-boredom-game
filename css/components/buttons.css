@@ -1,0 +1,105 @@
+/* ============================================================
+   buttons.css — Botões do site
+   Uso: <button class="btn btn-primary btn-lg">
+   Variantes: btn-primary | btn-outline | btn-ghost
+   Tamanhos:  btn-sm | (normal) | btn-lg
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 var(--space-5);
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    background var(--dur-fast),
+    border-color var(--dur-fast),
+    color var(--dur-fast),
+    box-shadow var(--dur-med);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px) scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+}
+
+/* ---------- Variantes ---------- */
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-strong);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn-outline {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-outline:hover:not(:disabled) {
+  background: var(--accent-soft);
+}
+
+.btn-ghost {
+  padding-inline: var(--space-2);
+  color: var(--text);
+}
+
+.btn-ghost:hover .play-ring {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* ---------- Tamanhos ---------- */
+
+.btn-sm {
+  min-height: 36px;
+  padding: 0 var(--space-4);
+  font-size: var(--fs-sm);
+}
+
+.btn-lg {
+  min-height: 54px;
+  padding: 0 var(--space-6);
+  font-size: var(--fs-lg);
+}
+
+.btn-ghost.btn-lg {
+  padding-inline: var(--space-2);
+}
+
+/* Círculo com ícone de play (botão "Ver trailer") */
+.play-ring {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 2px solid var(--line-strong);
+  border-radius: 50%;
+  transition: background var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast);
+}
+
+.play-ring svg {
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+  fill: currentColor;
+}

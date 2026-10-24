@@ -1,3 +1,12 @@
+// Animações (smooth scroll, 3D, entradas) estão sempre ligadas.
+// Para as desligar, abre o site com ?motion=off no endereço.
+const MOTION_OFF = /[?&]motion=off\b/.test(location.search);
+if (MOTION_OFF) document.documentElement.classList.add('motion-off');
+
+function prefersReducedMotion() {
+  return MOTION_OFF;
+}
+
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;')

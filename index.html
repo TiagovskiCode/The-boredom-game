@@ -3,241 +3,375 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080A09">
+  <meta name="theme-color" content="#07090A">
   <title>The Boredom Game - Passatempos para Amigos</title>
   <meta name="description" content="Jogos rápidos para jogar em grupo com um só telemóvel: sorteios, rondas e placar, sem registo e sem instalar nada.">
   <meta property="og:title" content="The Boredom Game — Passatempos para Amigos">
   <meta property="og:description" content="Jogos rápidos para jogar em grupo com um só telemóvel, sem registo.">
   <meta property="og:type" content="website">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♠</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2224%22 fill=%22%23A6FF3D%22/><text x=%2250%22 y=%2272%22 font-size=%2264%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-weight=%22900%22>B</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
   <a class="skip-link" href="#jogos">Saltar para os jogos</a>
   <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track" id="ticker-track"></div>
-  </div>
+  <!-- ========== HEADER (fica fora do smooth-wrapper para continuar fixo) ========== -->
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a href="#topo" class="logo" aria-label="The Boredom Game, início">
+        <span class="logo-mark" aria-hidden="true">B</span>
+        <span class="logo-text">BOREDOM<span class="text-accent">GAME</span></span>
+      </a>
 
-  <header class="site-header">
-    <div class="nav-bar">
-      <a href="#topo" class="logo">THE BOREDOM GAME</a>
-      <nav class="nav-links">
+      <nav class="main-nav" id="main-nav" aria-label="Principal">
+        <a href="#hero">Início</a>
+        <a href="#jogadores">Jogadores</a>
         <a href="#jogos">Jogos</a>
-        <a href="#como">Níveis</a>
-        <a href="#origem">Origem</a>
-        <a href="#" id="leaderboard-link">Placar</a>
-        <button class="btn nav-chip" id="leaderboard-btn">
-          <span id="leaderboard-label">🏆 Placar</span>
-        </button>
+        <a href="#roleta">Roleta</a>
+        <a href="#placar">Placar</a>
+        <a href="#sobre">Sobre</a>
       </nav>
+
+      <div class="header-actions">
+        <button type="button" class="icon-btn" id="search-btn" aria-label="Procurar um jogo">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        </button>
+        <button type="button" class="leader-chip" id="leaderboard-btn" aria-label="Abrir placar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>
+          <span id="leaderboard-label">Placar</span>
+        </button>
+        <a href="#jogadores" class="btn btn-outline btn-sm header-cta">Jogar</a>
+        <button type="button" class="icon-btn menu-toggle" id="menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="main-nav">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
     </div>
   </header>
 
-  <main id="topo">
-    <section class="hero">
-      <div class="hero-watermark" aria-hidden="true">BOREDOM</div>
-      <div class="hero-inner">
-      <div class="hero-copy">
-        <div class="press-start"><i aria-hidden="true"></i>PRESS START</div>
-        <h1 class="hero-title">A noite ainda <em class="rgb-text">não acabou.</em></h1>
-        <p class="hero-sub">Jogos para o grupo todo, num só telemóvel. Junta os nomes, escolhe um jogo e deixa as rondas, os sorteios e o placar por nossa conta.</p>
-        <div class="cta-row">
-          <a href="#jogadores" class="btn btn-fill rgb-fill cut">▶ Começar a noite</a>
-        </div>
-      </div>
+  <!-- ========== CONTEÚDO COM SMOOTH SCROLL (GSAP ScrollSmoother) ========== -->
+  <div id="smooth-wrapper">
+    <div id="smooth-content">
+      <main id="topo">
 
-      <div class="stage" id="stage">
-        <div class="ring" aria-hidden="true"></div>
-        <div class="orbit" aria-hidden="true"><span>▲</span><span>●</span><span>■</span><span>◆</span></div>
-        <div class="win-banner" id="win-banner" aria-hidden="true">▶ JOGO DESBLOQUEADO</div>
-        <div class="burst" id="burst" aria-hidden="true"></div>
-        <div class="cabinet" id="roleta">
-          <div class="cabinet-head"><span>ROLETA DE JOGOS</span><b>● LIVE</b></div>
-          <div class="rgb-line" aria-hidden="true"></div>
-          <div id="roulette">
-            <div class="drum">
-              <div class="drum-row" data-slot="prev" aria-hidden="true"></div>
-              <div class="drum-row is-current" data-slot="cur"></div>
-              <div class="drum-row" data-slot="next" aria-hidden="true"></div>
+        <!-- ---------- HERO / CARROSSEL ---------- -->
+        <section class="hero" id="hero" aria-roledescription="carrossel" aria-label="Jogos em destaque">
+          <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
+          <div class="hero-shade" aria-hidden="true"></div>
+
+          <div class="container hero-inner">
+            <div class="hero-copy" id="hero-copy" aria-live="polite">
+              <span class="eyebrow" data-hero="tag">Passatempos para amigos</span>
+              <h1 class="hero-title" data-hero="title">A noite ainda <span class="text-accent">não acabou.</span></h1>
+              <p class="hero-desc" data-hero="desc">Jogos para o grupo todo, num só telemóvel. Junta os nomes, escolhe um jogo e deixa as rondas, os sorteios e o placar por nossa conta.</p>
+              <div class="hero-meta" data-hero="meta"></div>
+              <div class="hero-actions">
+                <button type="button" class="btn btn-primary btn-lg" data-hero="play">Começar a noite</button>
+                <a href="#jogos" class="btn btn-ghost btn-lg">
+                  <span class="play-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+                  Ver todos os jogos
+                </a>
+              </div>
             </div>
-            <p class="drum-hint" data-slot="hint" role="status"></p>
-            <button class="spin-btn" data-action="spin">Rodar</button>
-            <button class="btn rgb-border cut play-btn" data-action="play"></button>
           </div>
+
+          <button type="button" class="hero-arrow is-prev" data-hero-nav="-1" aria-label="Destaque anterior">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <button type="button" class="hero-arrow is-next" data-hero-nav="1" aria-label="Destaque seguinte">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+          <div class="hero-dots" id="hero-dots" role="tablist" aria-label="Escolher destaque"></div>
+          <p class="hero-hint" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M9 11V5a2 2 0 0 1 4 0v5m0-1a2 2 0 0 1 4 0v2m0-1a2 2 0 0 1 4 0v4a7 7 0 0 1-7 7h-1a7 7 0 0 1-6-3l-3-5a2 2 0 0 1 3-2l2 2"/></svg>
+            Arrasta para rodar · clica nos dados
+          </p>
+        </section>
+
+        <!-- ---------- FAIXA DE NOMES ---------- -->
+        <div class="ticker" aria-hidden="true">
+          <div class="ticker-track" id="ticker-track"></div>
         </div>
-      </div>
-      </div>
-      <a class="scroll-cue" href="#jogadores">Desce para jogar ↓</a>
-    </section>
 
-    <section class="facts">
-      <div class="facts-inner">
-        <div class="fact"><span class="fact-value" id="stat-game-count">9</span><span class="fact-label">Jogos no catálogo</span></div>
-        <div class="fact"><span class="fact-value" id="stat-players">0</span><span class="fact-label">Jogadores na sala</span></div>
-        <div class="fact"><span class="fact-value" id="stat-leader">—</span><span class="fact-label">Líder do placar</span></div>
-        <div class="fact"><span class="fact-value" id="stat-total-points">0</span><span class="fact-label">Pontos totais</span></div>
-      </div>
-    </section>
+        <!-- ---------- NÚMEROS ---------- -->
+        <section class="stats" aria-label="Resumo da sessão">
+          <div class="container stats-grid">
+            <div class="stat" data-reveal>
+              <span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3M15 12h.01M18 13h.01"/></svg></span>
+              <div><span class="stat-value" id="stat-game-count">0</span><span class="stat-label">Jogos disponíveis</span></div>
+            </div>
+            <div class="stat" data-reveal>
+              <span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M16 4a4 4 0 0 1 0 8M22 21a7 7 0 0 0-4-6.3"/></svg></span>
+              <div><span class="stat-value" id="stat-players">0</span><span class="stat-label">Jogadores na sala</span></div>
+            </div>
+            <div class="stat" data-reveal>
+              <span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg></span>
+              <div><span class="stat-value" id="stat-leader">—</span><span class="stat-label">Líder do placar</span></div>
+            </div>
+            <div class="stat" data-reveal>
+              <span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg></span>
+              <div><span class="stat-value" id="stat-total-points">0</span><span class="stat-label">Pontos da noite</span></div>
+            </div>
+          </div>
+        </section>
 
-    <div class="led-strip" aria-hidden="true"></div>
+        <!-- ---------- JOGADORES ---------- -->
+        <section class="section players" id="jogadores">
+          <div class="container players-inner">
+            <div class="section-head" data-reveal>
+              <span class="eyebrow">Passo 1</span>
+              <h2 class="section-title">Quem joga hoje?</h2>
+              <p class="section-sub">Escreve os nomes do grupo. Podes juntar ou tirar amigos a qualquer momento: a roleta e o catálogo ajustam-se sozinhos.</p>
+            </div>
 
-    <section class="featured" id="destaque" data-featured="impostor">
-      <div class="featured-card">
-        <div class="featured-cover" id="featured-cover" aria-hidden="true"></div>
-        <div class="featured-body">
-          <span class="featured-tag">EM DESTAQUE</span>
-          <h2 class="featured-title" id="featured-title"></h2>
-          <p class="featured-desc" id="featured-desc"></p>
-          <div class="card-chips" id="featured-chips"></div>
-          <button class="btn btn-fill rgb-fill cut featured-play" id="featured-play">▶ Jogar agora</button>
+            <div class="players-card" data-reveal>
+              <div class="player-form">
+                <label for="player-input" class="sr-only">Nome do jogador</label>
+                <input type="text" id="player-input" class="input" placeholder="Nome do amigo..." maxlength="24" autocomplete="off" autocapitalize="words" enterkeyhint="done">
+                <button type="button" class="btn btn-primary" id="add-player-btn">+ Adicionar</button>
+              </div>
+              <div class="players-meta">
+                <span><strong id="stat-players-mini">0</strong> na sessão</span>
+                <span class="players-hint">Enter para adicionar</span>
+              </div>
+              <div id="players-list" class="player-list" aria-live="polite"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------- SUGESTÕES ---------- -->
+        <section class="section picks" id="sugestoes">
+          <div class="container">
+            <div class="section-head section-head--row" data-reveal>
+              <h2 class="section-title section-title--bar">Bons para começar</h2>
+              <a href="#jogos" class="link-more">Ver todos os jogos <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+            </div>
+            <div class="picks-grid" id="quick-picks" data-reveal></div>
+          </div>
+        </section>
+
+        <!-- ---------- CATÁLOGO ---------- -->
+        <section class="section catalog" id="jogos">
+          <div class="container">
+            <div class="section-head section-head--row" data-reveal>
+              <div>
+                <span class="eyebrow">Passo 2</span>
+                <h2 class="section-title">Escolhe o teu jogo</h2>
+              </div>
+              <label class="search-field">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+                <span class="sr-only">Procurar jogo</span>
+                <input type="search" id="game-search" placeholder="Procurar jogo..." autocomplete="off">
+              </label>
+            </div>
+
+            <div class="filters" role="toolbar" aria-label="Filtrar jogos" data-reveal>
+              <button type="button" class="filter-btn active" data-filter="all" aria-pressed="true">Todos</button>
+              <button type="button" class="filter-btn" data-filter="festa" aria-pressed="false">Festa</button>
+              <button type="button" class="filter-btn" data-filter="desafio" aria-pressed="false">Desafio</button>
+              <button type="button" class="filter-btn" data-filter="quiz" aria-pressed="false">Quiz</button>
+              <button type="button" class="filter-btn" data-filter="duelo" aria-pressed="false">Duelo</button>
+              <button type="button" class="filter-btn" data-filter="util" aria-pressed="false">Utilitários</button>
+              <button type="button" class="filter-btn" data-filter="recom" aria-pressed="false">Recomendados</button>
+              <button type="button" class="filter-btn" data-filter="favs" aria-pressed="false">Favoritos</button>
+            </div>
+
+            <div class="games-grid" id="games-grid">
+              <p class="empty-state" id="empty-state">Nenhum jogo encontrado para este filtro.</p>
+            </div>
+            <div class="catalog-more">
+              <button type="button" class="btn btn-outline" id="show-all" hidden></button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------- ROLETA DE JOGOS ---------- -->
+        <section class="section spinner" id="roleta">
+          <div class="container spinner-inner">
+            <div class="spinner-copy" data-reveal>
+              <span class="eyebrow">Sem ideias?</span>
+              <h2 class="section-title">Deixa a roleta <span class="text-accent">escolher</span></h2>
+              <p class="section-sub">A roleta só sorteia jogos que o vosso grupo consegue jogar agora, com o número de jogadores que está na sala.</p>
+            </div>
+
+            <div class="stage" id="stage" data-reveal>
+              <div class="burst" id="burst" aria-hidden="true"></div>
+              <div class="win-banner" aria-hidden="true">Jogo escolhido!</div>
+              <div class="slot-machine" id="roulette">
+                <div class="slot-head"><span>Roleta de jogos</span><b>● Live</b></div>
+                <div class="drum">
+                  <div class="drum-row" data-slot="prev" aria-hidden="true"></div>
+                  <div class="drum-row is-current" data-slot="cur"></div>
+                  <div class="drum-row" data-slot="next" aria-hidden="true"></div>
+                </div>
+                <p class="drum-hint" data-slot="hint" role="status"></p>
+                <div class="slot-actions">
+                  <button type="button" class="btn btn-outline" data-action="spin">Rodar</button>
+                  <button type="button" class="btn btn-primary" data-action="play"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------- PLACAR ---------- -->
+        <section class="section board" id="placar">
+          <div class="container">
+            <div class="section-head section-head--row" data-reveal>
+              <div>
+                <span class="eyebrow">Ao vivo</span>
+                <h2 class="section-title">Placar da noite</h2>
+              </div>
+              <button type="button" class="link-more" id="scoreboard-open">Abrir placar completo <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+            </div>
+            <div class="board-list" id="scoreboard-list" aria-live="polite" data-reveal></div>
+          </div>
+        </section>
+
+        <!-- ---------- COMO FUNCIONA ---------- -->
+        <section class="section how" id="como">
+          <div class="container">
+            <div class="section-head section-head--center" data-reveal>
+              <span class="eyebrow">Como funciona</span>
+              <h2 class="section-title">Três passos e já estás a jogar</h2>
+            </div>
+            <div class="how-grid">
+              <article class="how-step" data-reveal data-tilt>
+                <span class="how-num">01</span>
+                <h3>Adiciona os jogadores</h3>
+                <p>Escreve os nomes. Junta ou tira amigos a qualquer momento.</p>
+              </article>
+              <article class="how-step" data-reveal data-tilt>
+                <span class="how-num">02</span>
+                <h3>Escolhe um jogo</h3>
+                <p>Filtra por festa, desafio ou favoritos, ou deixa a roleta decidir.</p>
+              </article>
+              <article class="how-step" data-reveal data-tilt>
+                <span class="how-num">03</span>
+                <h3>Passa o telemóvel</h3>
+                <p>Cada ronda soma ao placar. No fim da noite, sabe-se quem venceu.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------- SOBRE ---------- -->
+        <section class="section about" id="sobre">
+          <div class="container about-inner">
+            <div class="about-copy" data-reveal>
+              <span class="eyebrow">Como tudo começou</span>
+              <h2 class="section-title">Feito por dois amigos, para a mesa toda</h2>
+              <p class="about-lead">Todos conhecemos aquela hora: o grupo já jantou, já falou de tudo e os telemóveis começam a sair do bolso.</p>
+              <p>O The Boredom Game nasceu entre dois amigos, o Tiago e o Gabriel, com uma ideia simples: um só telemóvel no meio da mesa e jogos rápidos para quem está à tua frente.</p>
+            </div>
+            <div class="makers">
+              <div class="maker" data-reveal data-tilt>
+                <div class="maker-avatar" aria-hidden="true">T</div>
+                <div><div class="maker-name">Tiago Teixeira</div><div class="maker-role">Web developer</div></div>
+              </div>
+              <div class="maker" data-reveal data-tilt>
+                <div class="maker-avatar maker-avatar--alt" aria-hidden="true">G</div>
+                <div><div class="maker-name">Gabriel</div><div class="maker-role">Co-criador</div></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------- FAQ ---------- -->
+        <section class="section faq" id="faq">
+          <div class="container faq-inner">
+            <div class="section-head" data-reveal>
+              <span class="eyebrow">Dúvidas</span>
+              <h2 class="section-title">Perguntas frequentes</h2>
+            </div>
+            <div class="faq-list" data-reveal>
+              <details>
+                <summary>Preciso de criar conta?</summary>
+                <p>Não. Não há registo nem nada para instalar: abres a página, juntas os nomes e jogas.</p>
+              </details>
+              <details>
+                <summary>Quantos jogadores são precisos?</summary>
+                <p>Depende do jogo. Cada cartão mostra o mínimo, e a roleta só sorteia jogos que o grupo atual consegue jogar.</p>
+              </details>
+              <details>
+                <summary>O que acontece se eu recarregar a página?</summary>
+                <p>Os jogadores, os pontos e os favoritos ficam guardados no teu browser, por isso a noite continua onde a deixaste.</p>
+              </details>
+              <details>
+                <summary>Os pontos contam entre jogos?</summary>
+                <p>Sim. Há um só placar por sessão, que soma as rondas de todos os jogos.</p>
+              </details>
+              <details>
+                <summary>Funciona sem internet?</summary>
+                <p>Os jogos funcionam, mas as fontes, as animações e os elementos 3D carregam da internet. Sem ligação, o site fica mais simples.</p>
+              </details>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------- CTA FINAL ---------- -->
+        <section class="section final-cta">
+          <div class="container">
+            <div class="cta-box" data-reveal>
+              <canvas class="cta-canvas" id="cta-canvas" aria-hidden="true"></canvas>
+              <div class="cta-copy">
+                <h2>Já ninguém sabe o que fazer <span class="text-accent">depois das onze.</span></h2>
+                <p>Nós sabemos.</p>
+                <a href="#jogadores" class="btn btn-primary btn-lg">Começar agora</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <div class="footer-brand">
+            <span class="logo-text">BOREDOM<span class="text-accent">GAME</span></span>
+            <p>Jogos para o grupo todo, num só telemóvel.</p>
+          </div>
+          <nav class="footer-links" aria-label="Rodapé">
+            <a href="#jogos">Jogos</a>
+            <a href="#placar">Placar</a>
+            <a href="#sobre">Sobre</a>
+            <a href="#faq">Perguntas</a>
+            <a href="#topo">Voltar ao topo ↑</a>
+          </nav>
+          <p class="footer-credit">Feito por Tiago Teixeira e Gabriel · para noites sem telemóvel na mão</p>
         </div>
-      </div>
-    </section>
+      </footer>
+    </div>
+  </div>
 
-    <section class="players-panel" id="jogadores">
-      <h2 class="section-title">Quem joga hoje?</h2>
-      <p class="section-sub">Escreve os nomes do grupo. Junta ou tira amigos a qualquer momento: a roleta e o catálogo ajustam-se.</p>
-      <div class="player-setup">
-        <label for="player-input" class="player-setup-label">Jogadores</label>
-        <input type="text" id="player-input" placeholder="Nome do amigo..." maxlength="24" autocomplete="off" autocapitalize="words" enterkeyhint="done">
-        <button class="btn btn-ghost" id="add-player-btn">+ Adicionar</button>
-        <span class="session-indicator"><strong id="stat-players-mini">0</strong>&nbsp;na sessão</span>
-        <div id="players-list" class="tags-container"></div>
-      </div>
-    </section>
-
-    <section class="hub-container" id="jogos">
-      <div class="hub-header">
-        <h2 class="section-title">Escolhe a tua mesa</h2>
-        <div class="filters">
-          <button class="filter-btn active" data-filter="all" aria-pressed="true">Todos</button>
-          <button class="filter-btn" data-filter="favs" aria-pressed="false">❤️ Favoritos</button>
-          <button class="filter-btn" data-filter="recom" aria-pressed="false">⭐ Recomendados</button>
-          <button class="filter-btn" data-filter="festa" aria-pressed="false">Festa</button>
-          <button class="filter-btn" data-filter="util" aria-pressed="false">Utilitários</button>
-        </div>
-      </div>
-
-      <div class="games-grid" id="games-grid">
-        <p class="empty-state" id="empty-state">Nenhum jogo encontrado para este filtro.</p>
-      </div>
-    </section>
-
-    <section class="scoreboard" id="placar-ao-vivo">
-      <div class="scoreboard-copy">
-        <h2 class="section-title">Placar da <span class="rgb-text">noite</span></h2>
-        <p class="section-sub">Cada ronda soma pontos. Aqui vês quem lidera, ao vivo, sem abrir nenhum jogo.</p>
-        <button class="btn rgb-border cut scoreboard-open" id="scoreboard-open">Abrir placar completo</button>
-      </div>
-      <div class="scoreboard-panel">
-        <div class="rgb-line" aria-hidden="true"></div>
-        <div id="scoreboard-list" aria-live="polite"></div>
-      </div>
-    </section>
-
-    <section class="how" id="como">
-      <h2 class="section-title">Três <span class="rgb-text">níveis</span> e já estás a jogar</h2>
-      <div class="how-steps">
-        <div class="how-step"><b>LVL 01</b><h3>Adiciona os jogadores</h3><p>Escreve os nomes. Junta ou tira amigos a qualquer momento.</p></div>
-        <div class="how-step"><b>LVL 02</b><h3>Escolhe um jogo</h3><p>Filtra por festa, utilitários ou favoritos, ou deixa a roleta decidir.</p></div>
-        <div class="how-step"><b>LVL 03</b><h3>Joga e acumula pontos</h3><p>Cada ronda soma ao placar. No final, sabe-se quem venceu a noite.</p></div>
-      </div>
-    </section>
-
-    <section class="origin" id="origem">
-      <div class="origin-copy">
-        <h2 class="section-title">Como tudo <span class="rgb-text">começou</span></h2>
-        <p class="origin-lead">Todos conhecemos aquela hora: o grupo já jantou, já falou de tudo e os telemóveis começam a sair do bolso.</p>
-        <p class="origin-text">O The Boredom Game nasceu entre dois amigos, o Tiago e o Gabriel, com uma ideia simples: um só telemóvel no meio da mesa e jogos rápidos para quem está à tua frente.</p>
-      </div>
-      <div class="makers">
-        <div class="maker">
-          <div class="maker-avatar cut" aria-hidden="true">T</div>
-          <div><div class="maker-name">Tiago Teixeira</div><div class="maker-role">Web developer</div></div>
-        </div>
-        <div class="maker">
-          <div class="maker-avatar cut" aria-hidden="true">G</div>
-          <div><div class="maker-name">Gabriel</div><div class="maker-role">Co-criador</div></div>
-        </div>
-      </div>
-    </section>
-
-    <div class="led-strip" aria-hidden="true"></div>
-
-    <section class="faq" id="faq">
-      <h2 class="section-title">Perguntas <span class="rgb-text">frequentes</span></h2>
-      <div class="faq-list">
-        <details>
-          <summary>Preciso de criar conta?</summary>
-          <p>Não. Não há registo nem nada para instalar: abres a página, juntas os nomes e jogas.</p>
-        </details>
-        <details>
-          <summary>Quantos jogadores são precisos?</summary>
-          <p>Depende do jogo. Cada cartão mostra o mínimo, entre 1 e 3 jogadores, e a roleta só sorteia jogos que o grupo atual consegue jogar.</p>
-        </details>
-        <details>
-          <summary>O que acontece se eu recarregar a página?</summary>
-          <p>Os jogadores, os pontos e os favoritos ficam guardados no teu browser, por isso a noite continua onde a deixaste.</p>
-        </details>
-        <details>
-          <summary>Os pontos contam entre jogos?</summary>
-          <p>Sim. Há um só placar por sessão, que soma as rondas de todos os jogos.</p>
-        </details>
-        <details>
-          <summary>Funciona sem internet?</summary>
-          <p>Ainda não garantimos. As fontes e o estilo carregam da internet na primeira visita, e o modo totalmente offline ainda não está feito.</p>
-        </details>
-        <details>
-          <summary>Quem fez o The Boredom Game?</summary>
-          <p>O Tiago e o Gabriel, dois amigos que queriam algo para jogar quando já ninguém sabe o que fazer.</p>
-        </details>
-      </div>
-    </section>
-
-    <section class="final-cta">
-      <div class="final-cta-box">
-        <h2>Já ninguém sabe o que fazer <span class="rgb-text">depois das onze.</span></h2>
-        <p>Nós sabemos.</p>
-        <a href="#jogadores" class="btn btn-fill rgb-fill cut">▶ START</a>
-      </div>
-    </section>
-  </main>
-
+  <!-- ========== MODAL DOS JOGOS (fora do smooth-wrapper) ========== -->
   <div id="game-modal" class="modal hidden">
     <div class="modal-content" role="dialog" aria-modal="true" aria-label="Janela do jogo" tabindex="-1">
-      <button class="close-btn" id="close-modal" aria-label="Fechar">&times;</button>
+      <button type="button" class="close-btn" id="close-modal" aria-label="Fechar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
       <div id="game-screen"></div>
     </div>
   </div>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <span class="logo">THE BOREDOM GAME</span>
-        <p>Jogos para o grupo todo, num só telemóvel.</p>
-      </div>
-      <nav class="footer-links" aria-label="Rodapé">
-        <a href="#jogos">Jogos</a>
-        <a href="#como">Níveis</a>
-        <a href="#origem">Origem</a>
-        <a href="#faq">Perguntas</a>
-        <a href="#topo">Voltar ao topo ↑</a>
-      </nav>
-      <p class="footer-credit">Feito por Tiago Teixeira e Gabriel · para noites sem telemóvel na mão</p>
-    </div>
-  </footer>
+  <!-- Bibliotecas externas (o site funciona mesmo que falhem) -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 
+  <!-- Núcleo -->
   <script src="js/data.js" defer></script>
   <script src="js/utils.js" defer></script>
   <script src="js/store.js" defer></script>
   <script src="js/leaderboard.js" defer></script>
   <script src="js/players.js" defer></script>
   <script src="js/registry.js" defer></script>
+
+  <!-- Jogos (kit.js primeiro: os pacotes usam-no) -->
+  <script src="js/games/kit.js" defer></script>
   <script src="js/games/provavel.js" defer></script>
   <script src="js/games/roleta.js" defer></script>
   <script src="js/games/impostor.js" defer></script>
@@ -247,11 +381,38 @@
   <script src="js/games/categorias.js" defer></script>
   <script src="js/games/mimica.js" defer></script>
   <script src="js/games/palavra-proibida.js" defer></script>
-  <script src="js/stats.js" defer></script>
-  <script src="js/roulette.js" defer></script>
+  <script src="js/games/eu-nunca.js" defer></script>
+  <script src="js/games/batata-quente.js" defer></script>
+  <script src="js/games/mais-ou-menos.js" defer></script>
+  <script src="js/games/desenha.js" defer></script>
+  <script src="js/games/cronometro.js" defer></script>
+  <script src="js/games/quiz.js" defer></script>
+  <script src="js/games/sorteador.js" defer></script>
+  <script src="js/games/party-pack.js" defer></script>
+  <script src="js/games/quiz-pack.js" defer></script>
+  <script src="js/games/jogo-do-galo.js" defer></script>
+  <script src="js/games/quatro-em-linha.js" defer></script>
+  <script src="js/games/memoria.js" defer></script>
+  <script src="js/games/toque-rapido.js" defer></script>
+  <script src="js/games/simon.js" defer></script>
+  <script src="js/games/forca.js" defer></script>
+  <script src="js/games/dados-sorte.js" defer></script>
+  <script src="js/games/pedra-papel-tesoura.js" defer></script>
+  <script src="js/games/duelo-reflexos.js" defer></script>
+  <script src="js/games/palavra-encadeada.js" defer></script>
+  <script src="js/games/anagramas.js" defer></script>
+  <script src="js/games/garrafa.js" defer></script>
+  <script src="js/games/moeda-dados.js" defer></script>
+
+  <!-- Interface -->
   <script src="js/covers.js" defer></script>
-  <script src="js/sections.js" defer></script>
+  <script src="js/stats.js" defer></script>
   <script src="js/hub.js" defer></script>
+  <script src="js/roulette.js" defer></script>
+  <script src="js/sections.js" defer></script>
+  <script src="js/scene3d.js" defer></script>
+  <script src="js/hero.js" defer></script>
+  <script src="js/motion.js" defer></script>
   <script src="js/nav.js" defer></script>
 </body>
 </html>

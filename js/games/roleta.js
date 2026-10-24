@@ -7,34 +7,37 @@
 window.GameModules = window.GameModules || {};
 
 window.GameModules.roleta = {
-  colors: ['#ff4757', '#2ed573', '#3742fa', '#ffa502', '#eccc68', '#ff6b81', '#7bed9f', '#70a1ff'],
+  colors: ['#A6FF3D', '#FF3D7F', '#3DA5FF', '#FFB020', '#9B6BFF', '#3DE0D0', '#FF7AD9', '#FF8A3D'],
   options: ['Pizza', 'Filme', 'Jogo de tabuleiro', 'Sair de casa'],
   spinning: false,
   currentRotation: 0,
+  rafId: null,
+
+  cleanup() {
+    cancelAnimationFrame(this.rafId);
+    this.spinning = false;
+  },
 
   render(container) {
     container.innerHTML = `
       <div class="game-screen">
-        <h2>🎯 Roleta de Decisão</h2>
-        <p style="margin:0.5rem 0 1rem;">Escreve as opções e gira a roleta.</p>
+        <span class="game-tag">🎯 Roleta de Decisão</span>
+        <h2>Deixa a sorte decidir</h2>
+        <p class="mini-note">Escreve as opções e gira a roleta.</p>
 
         <div class="option-list" id="option-list"></div>
-        <div class="option-row">
-          <input type="text" id="new-option" placeholder="Nova opção...">
+        <div class="answer-form">
+          <input type="text" id="new-option" class="game-input" placeholder="Nova opção..." maxlength="40" autocomplete="off">
           <button class="game-btn secondary" id="add-option">Adicionar</button>
         </div>
 
-        <div style="display:flex; justify-content:center; margin:1.5rem 0;">
-          <div style="position:relative;">
-            <canvas id="wheel-canvas" width="280" height="280"></canvas>
-            <div style="position:absolute; top:-10px; left:50%; transform:translateX(-50%); font-size:1.8rem;">🔻</div>
-          </div>
+        <div class="wheel-wrap">
+          <canvas id="wheel-canvas" width="560" height="560"></canvas>
+          <div class="wheel-pointer" aria-hidden="true"></div>
         </div>
 
-        <div style="text-align:center;">
-          <button class="game-btn" id="spin-btn">Girar Roleta ➔</button>
-        </div>
-        <p class="chosen-player" id="wheel-result"></p>
+        <button class="game-btn" id="spin-btn">Girar roleta ➔</button>
+        <p class="chosen-player" id="wheel-result" role="status"></p>
       </div>
     `;
 
@@ -52,8 +55,8 @@ window.GameModules.roleta = {
       }
     });
 
-    container.querySelector('#new-option').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') container.querySelector('#add-option').click();
+    container.querySelector('#new-option').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.isComposing) container.querySelector('#add-option').click();
     });
 
     container.querySelector('#spin-btn').addEventListener('click', () => this.spin(container));
@@ -63,13 +66,14 @@ window.GameModules.roleta = {
     const listEl = container.querySelector('#option-list');
     listEl.innerHTML = this.options.map((opt, i) => `
       <div class="option-row">
-        <span style="flex:1; padding:0.5rem; background:#0F1017; border-radius:6px;">${opt}</span>
-        <button class="game-btn secondary" data-remove="${i}" style="margin-top:0; padding:0.5rem 0.8rem;">✕</button>
+        <span class="row-label">${escapeHtml(opt)}</span>
+        <button class="game-btn secondary small" data-remove="${i}" aria-label="Remover ${escapeHtml(opt)}">✕</button>
       </div>
     `).join('');
 
     listEl.querySelectorAll('[data-remove]').forEach(btn => {
       btn.addEventListener('click', () => {
+        if (this.spinning) return;
         this.options.splice(Number(btn.dataset.remove), 1);
         this.renderOptionList(container);
         this.drawWheel(container);
@@ -83,7 +87,7 @@ window.GameModules.roleta = {
     const ctx = canvas.getContext('2d');
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
-    const radius = cx - 5;
+    const radius = cx - 6;
     const n = Math.max(this.options.length, 1);
     const arc = (2 * Math.PI) / n;
 
@@ -103,29 +107,39 @@ window.GameModules.roleta = {
       ctx.closePath();
       ctx.fillStyle = this.colors[i % this.colors.length];
       ctx.fill();
+      ctx.strokeStyle = '#07090A';
+      ctx.lineWidth = 3;
+      ctx.stroke();
 
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(start + arc / 2);
       ctx.textAlign = 'right';
-      ctx.fillStyle = '#12131C';
-      ctx.font = 'bold 12px Segoe UI';
-      ctx.fillText(opt.slice(0, 14), radius - 10, 4);
+      ctx.fillStyle = '#0A1200';
+      ctx.font = '700 26px "Barlow Condensed", sans-serif';
+      ctx.fillText(opt.slice(0, 16), radius - 20, 9);
       ctx.restore();
     });
+
+    // Centro
+    ctx.beginPath();
+    ctx.arc(cx, cy, 26, 0, Math.PI * 2);
+    ctx.fillStyle = '#07090A';
+    ctx.fill();
 
     ctx.restore();
   },
 
   spin(container) {
-    if (this.spinning || this.options.length < 2) {
-      if (this.options.length < 2) {
-        container.querySelector('#wheel-result').textContent = 'Adiciona pelo menos 2 opções!';
-      }
+    const resultEl = container.querySelector('#wheel-result');
+    if (this.spinning) return;
+    if (this.options.length < 2) {
+      resultEl.textContent = 'Adiciona pelo menos 2 opções!';
       return;
     }
 
     this.spinning = true;
+    resultEl.textContent = '';
     const spinBtn = container.querySelector('#spin-btn');
     spinBtn.disabled = true;
 
@@ -133,31 +147,30 @@ window.GameModules.roleta = {
     const arc = (2 * Math.PI) / n;
     const winnerIndex = Math.floor(Math.random() * n);
 
-    // Gira várias voltas completas e para com o índice vencedor no topo (seta fixa)
-    const extraTurns = 5 * 2 * Math.PI;
-    const targetAngle = extraTurns + (2 * Math.PI - (winnerIndex * arc + arc / 2)) + Math.PI / 2;
-
-    const duration = 3200;
-    const start = performance.now();
+    // Gira várias voltas completas e para com o vencedor por baixo da seta (topo = -90°)
     const startRotation = this.currentRotation % (2 * Math.PI);
+    const landing = -Math.PI / 2 - (winnerIndex * arc + arc / 2);
+    const delta = 5 * 2 * Math.PI + ((landing - startRotation) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+
+    const duration = 3600;
+    const start = performance.now();
 
     const animate = (now) => {
-      const elapsed = now - start;
-      const t = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - t, 3); // ease-out cúbico
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 4); // ease-out
 
-      this.currentRotation = startRotation + eased * targetAngle;
+      this.currentRotation = startRotation + eased * delta;
       this.drawWheel(container);
 
       if (t < 1) {
-        requestAnimationFrame(animate);
+        this.rafId = requestAnimationFrame(animate);
       } else {
         this.spinning = false;
         spinBtn.disabled = false;
-        container.querySelector('#wheel-result').textContent = `🏆 ${this.options[winnerIndex]}`;
+        resultEl.textContent = `🏆 ${this.options[winnerIndex]}`;
       }
     };
 
-    requestAnimationFrame(animate);
+    this.rafId = requestAnimationFrame(animate);
   }
 };

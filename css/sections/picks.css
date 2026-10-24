@@ -1,0 +1,89 @@
+/* ============================================================
+   picks.css — "Bons para começar": 3 cartões largos
+   ============================================================ */
+
+.picks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+.pick-card {
+  --card-color: var(--accent);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  transition: border-color var(--dur-med), box-shadow var(--dur-med);
+}
+
+.pick-card:hover,
+.pick-card:focus-within {
+  border-color: color-mix(in srgb, var(--card-color) 55%, transparent);
+  box-shadow: 0 20px 50px -20px color-mix(in srgb, var(--card-color) 70%, transparent);
+}
+
+.pick-art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  padding: var(--space-4) var(--space-6);
+  color: var(--card-color);
+  background:
+    radial-gradient(70% 90% at 30% 20%, color-mix(in srgb, var(--card-color) 40%, transparent), transparent 70%),
+    linear-gradient(135deg, color-mix(in srgb, var(--card-color) 16%, var(--surface-2)), var(--bg));
+}
+
+.pick-art svg {
+  width: 100%;
+  filter: drop-shadow(0 0 16px color-mix(in srgb, var(--card-color) 50%, transparent));
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.pick-card:hover .pick-art svg {
+  transform: scale(1.07) rotate(-2deg);
+}
+
+.pick-body {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5) var(--space-5);
+}
+
+.pick-body h3 {
+  font-size: var(--fs-xl);
+  text-transform: none;
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+.pick-meta {
+  color: var(--text-mute);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .picks-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pick-card {
+    flex-direction: row;
+  }
+
+  .pick-art {
+    flex: 0 0 40%;
+    aspect-ratio: auto;
+    padding: var(--space-3);
+  }
+}

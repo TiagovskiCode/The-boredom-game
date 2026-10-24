@@ -2,8 +2,8 @@
 // mimica.js — Mímica
 // Um jogador vê a palavra em privado e representa-a sem falar
 // nem fazer sons; o resto do grupo tenta adivinhar contra o
-// tempo. Cada acerto soma pontos ao Placar global do jogador
-// que está a representar.
+// tempo. Cada acerto soma pontos ao placar do jogador que está
+// a representar.
 // ============================================================
 
 window.GameModules = window.GameModules || {};
@@ -11,6 +11,10 @@ window.GameModules = window.GameModules || {};
 window.GameModules.mimica = {
   timeLimit: 60,
   timerId: null,
+
+  cleanup() {
+    clearInterval(this.timerId);
+  },
 
   words: [
     'Elefante', 'Cozinhar um bolo', 'Professor(a)', 'Nadar', 'Avião',
@@ -27,11 +31,12 @@ window.GameModules.mimica = {
   ],
 
   render(container) {
+    clearInterval(this.timerId);
     if (Players.count() < 2) {
       container.innerHTML = `
         <div class="game-screen">
           <h2>🎭 Mímica</h2>
-          <p style="margin-top:1rem;">Precisas de pelo menos <strong>2 jogadores</strong> adicionados no topo da página para jogar.</p>
+          <p class="game-lead">Precisas de pelo menos <strong>2 jogadores</strong> adicionados na secção "Quem joga hoje?" para jogar.</p>
         </div>
       `;
       return;
@@ -45,13 +50,14 @@ window.GameModules.mimica = {
   },
 
   renderIntro(container) {
-    const { player } = this.session;
+    const player = escapeHtml(this.session.player);
     container.innerHTML = `
       <div class="game-screen">
-        <h2>🎭 Mímica</h2>
-        <p style="margin-top:1rem;">Passa o telemóvel a <strong class="highlight">${player}</strong>.</p>
+        <span class="game-tag">🎭 Mímica</span>
+        <h2>Passa o telemóvel a</h2>
+        <p class="chosen-player">${player}</p>
         <p class="mini-note">Só ${player} deve ver a palavra. Os outros vão tentar adivinhar por mímica, sem falar nem fazer sons.</p>
-        <button class="game-btn" id="show-word">Sou ${player}, mostrar a minha palavra</button>
+        <button class="game-btn" id="show-word">Sou ${player}, mostrar a palavra</button>
       </div>
     `;
     container.querySelector('#show-word').addEventListener('click', () => this.showWord(container));
@@ -61,8 +67,8 @@ window.GameModules.mimica = {
     this.session.word = this.bag.next();
     container.innerHTML = `
       <div class="game-screen">
-        <h2>🎭 A tua palavra</h2>
-        <p class="chosen-player">${this.session.word}</p>
+        <span class="game-tag">A tua palavra</span>
+        <p class="big-word">${this.session.word}</p>
         <p class="mini-note">Quando o resto do grupo estiver pronto para adivinhar, começa o cronómetro.</p>
         <button class="game-btn" id="start-mimica">Começar (${this.timeLimit}s) ➔</button>
       </div>
@@ -77,7 +83,7 @@ window.GameModules.mimica = {
       const timerEl = container.querySelector('#timer');
       if (timerEl) {
         timerEl.textContent = `${this.session.timeLeft}s`;
-        if (this.session.timeLeft <= 10) timerEl.style.color = '#ffa502';
+        timerEl.classList.toggle('is-warning', this.session.timeLeft <= 10);
       }
       if (this.session.timeLeft <= 0) {
         clearInterval(this.timerId);
@@ -90,10 +96,11 @@ window.GameModules.mimica = {
     const { word, correct, timeLeft } = this.session;
     container.innerHTML = `
       <div class="game-screen">
-        <h2>🎭 A representar: ${word}</h2>
-        <div style="font-size:2.5rem; font-weight:bold; color:#ff4757;" id="timer">${timeLeft}s</div>
-        <p class="mini-note" style="margin:0.5rem 0 1rem;">Acertos até agora: <strong style="color:#2ed573;">${correct}</strong></p>
-        <div style="display:flex; gap:1rem; justify-content:center;">
+        <span class="game-tag">A representar</span>
+        <p class="big-word">${word}</p>
+        <div class="game-timer ${timeLeft <= 10 ? 'is-warning' : ''}" id="timer">${timeLeft}s</div>
+        <p class="mini-note">Acertos até agora: <strong class="text-success">${correct}</strong></p>
+        <div class="btn-row">
           <button class="game-btn" id="got-it">✅ Acertaram!</button>
           <button class="game-btn secondary" id="skip-word">⏭️ Passar</button>
         </div>
@@ -115,9 +122,9 @@ window.GameModules.mimica = {
     container.innerHTML = `
       <div class="game-screen">
         <h2>⏰ Tempo esgotado!</h2>
-        <p style="margin:1rem 0; font-size:1.2rem;"><strong class="highlight">${player}</strong> acertou <strong style="color:#2ed573;">${correct}</strong> palavra${correct === 1 ? '' : 's'}!</p>
-        ${points > 0 ? `<p class="mini-note">+${points} pts adicionados ao Placar global.</p>` : ''}
-        <button class="game-btn" id="next-mimica">Próxima Ronda ➔</button>
+        <p class="game-lead"><strong class="highlight">${escapeHtml(player)}</strong> fez adivinhar <strong class="text-success">${correct}</strong> palavra${correct === 1 ? '' : 's'}!</p>
+        ${points > 0 ? `<p class="mini-note">+${points} pts adicionados ao placar da noite.</p>` : ''}
+        <button class="game-btn" id="next-mimica">Próxima ronda ➔</button>
       </div>
     `;
     container.querySelector('#next-mimica').addEventListener('click', () => this.render(container));

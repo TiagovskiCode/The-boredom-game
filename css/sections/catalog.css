@@ -1,0 +1,54 @@
+/* ============================================================
+   catalog.css — Catálogo de jogos (filtros + grelha de posters)
+   O aspeto de cada cartão está em components/game-card.css
+   ============================================================ */
+
+.catalog {
+  background:
+    radial-gradient(50% 40% at 0% 0%, var(--blue-soft), transparent 70%),
+    var(--bg);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-5);
+}
+
+/* Botão "Ver todos os jogos" por baixo da grelha */
+.catalog-more {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-6);
+}
+
+.empty-state {
+  display: none;
+  grid-column: 1 / -1;
+  padding: var(--space-8) var(--space-4);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-lg);
+  text-align: center;
+}
+
+.empty-state.visible {
+  display: block;
+}
+
+@media (max-width: 520px) {
+  .games-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
+
+  .card-title {
+    font-size: var(--fs-lg);
+  }
+}

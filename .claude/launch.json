@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "boredom-game",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "C:\\Users\\tiago\\AppData\\Local\\Temp\\claude\\C--Users-tiago--claude-spares-spare-hL7GOo\\cfce57af-7961-4025-ae30-ef32f864ab50\\scratchpad\\serve.ps1", "-Root", "C:\\Users\\tiago\\Desktop\\The-boredom-game", "-Port", "5599"],
+      "port": 5599
+    }
+  ]
+}

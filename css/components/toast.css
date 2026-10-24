@@ -1,0 +1,28 @@
+/* ============================================================
+   toast.css — Aviso "+30 Tiago" quando alguém pontua
+   ============================================================ */
+
+.points-toast {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-6);
+  z-index: var(--z-toast);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--r-pill);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  box-shadow: var(--shadow-glow);
+  opacity: 0;
+  transform: translate(-50%, 20px) scale(0.9);
+  transition: opacity var(--dur-med), transform var(--dur-med) var(--ease-back);
+  pointer-events: none;
+}
+
+.points-toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}

@@ -1,10 +1,15 @@
+// ============================================================
+// roulette.js — Roleta de jogos (slot machine) + faixa de nomes
+// ============================================================
+
 (function () {
   const root = document.getElementById('roulette');
   const track = document.getElementById('ticker-track');
 
   if (track) {
     const names = GAMES_DATA.map(g => g.name);
-    track.innerHTML = names.concat(names, names, names).map(n => `<span>${escapeHtml(n)}</span>`).join('');
+    // Duas cópias seguidas: a animação CSS desliza 50% e recomeça sem salto
+    track.innerHTML = names.concat(names).map(n => `<span>${escapeHtml(n)}</span>`).join('');
   }
 
   if (!root) return;
@@ -15,19 +20,20 @@
   const hint = root.querySelector('[data-slot="hint"]');
   const spinBtn = root.querySelector('[data-action="spin"]');
   const playBtn = root.querySelector('[data-action="play"]');
-  const reduceMotion = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduceMotion = prefersReducedMotion();
   const stage = document.getElementById('stage');
   const burst = document.getElementById('burst');
-  const hues = ['#FF6B5E', '#F5F5F0', '#3DDC84'];
+  const hues = ['#A6FF3D', '#FF3D7F', '#3DA5FF', '#FFB020'];
   const shapes = ['▲', '●', '■', '◆'];
 
   if (burst) {
-    burst.innerHTML = Array.from({ length: 14 }, (_, k) => {
-      const angle = (k / 14) * Math.PI * 2;
-      const radius = k % 2 ? 230 : 160;
+    burst.innerHTML = Array.from({ length: 16 }, (_, k) => {
+      const angle = (k / 16) * Math.PI * 2;
+      const radius = k % 2 ? 240 : 170;
       const x = Math.round(Math.cos(angle) * radius);
       const y = Math.round(Math.sin(angle) * radius);
-      return `<span style="--x:${x}px;--y:${y}px;color:${hues[k % hues.length]};text-shadow:0 0 14px ${hues[k % hues.length]}">${shapes[k % 4]}</span>`;
+      const hue = hues[k % hues.length];
+      return `<span style="--x:${x}px;--y:${y}px;color:${hue};text-shadow:0 0 14px ${hue}">${shapes[k % 4]}</span>`;
     }).join('');
   }
 
@@ -57,7 +63,7 @@
     slotPrev.textContent = at(-1).name;
     slotCur.textContent = current.name;
     slotNext.textContent = at(1).name;
-    hint.textContent = `mín. ${current.minPlayers} jogador${current.minPlayers > 1 ? 'es' : ''} · ${current.desc}`;
+    hint.textContent = `${playersLabel(current.minPlayers)} · ${current.desc}`;
     playBtn.textContent = `Jogar ${current.name}`;
     playBtn.dataset.game = current.id;
   }
@@ -74,6 +80,7 @@
     spinning = true;
     if (stage) stage.classList.remove('is-won');
     spinBtn.disabled = true;
+    playBtn.disabled = true;
     spinBtn.textContent = 'A rodar…';
 
     const total = reduceMotion ? 1 : 16 + Math.floor(Math.random() * 6);
@@ -88,6 +95,7 @@
       } else {
         spinning = false;
         spinBtn.disabled = false;
+        playBtn.disabled = false;
         spinBtn.textContent = 'Rodar';
         celebrate();
       }

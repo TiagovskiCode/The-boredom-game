@@ -1,0 +1,48 @@
+/* ============================================================
+   main.css — Ponto de entrada do CSS
+   ------------------------------------------------------------
+   Cada ficheiro trata de uma só coisa. Para mudar:
+   - cores, fontes, raios  → base/tokens.css
+   - botões, chips, inputs → components/
+   - uma secção da página  → sections/<nome>.css
+   - o aspeto dentro dos jogos → games/
+   A ordem importa: do mais genérico para o mais específico.
+   ============================================================ */
+
+/* 1. Base */
+@import url('base/tokens.css');
+@import url('base/reset.css');
+@import url('base/typography.css');
+
+/* 2. Layout */
+@import url('layout/container.css');
+@import url('layout/header.css');
+@import url('layout/footer.css');
+
+/* 3. Componentes reutilizáveis */
+@import url('components/buttons.css');
+@import url('components/forms.css');
+@import url('components/chips.css');
+@import url('components/tilt.css');
+@import url('components/game-card.css');
+@import url('components/modal.css');
+@import url('components/toast.css');
+
+/* 4. Secções da página (pela ordem em que aparecem) */
+@import url('sections/hero.css');
+@import url('sections/ticker.css');
+@import url('sections/stats.css');
+@import url('sections/players.css');
+@import url('sections/picks.css');
+@import url('sections/catalog.css');
+@import url('sections/spinner.css');
+@import url('sections/board.css');
+@import url('sections/how.css');
+@import url('sections/about.css');
+@import url('sections/faq.css');
+@import url('sections/final-cta.css');
+
+/* 5. Interior dos jogos */
+@import url('games/game-ui.css');
+@import url('games/game-extras.css');
+@import url('games/game-boards.css');

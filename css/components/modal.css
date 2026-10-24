@@ -1,0 +1,92 @@
+/* ============================================================
+   modal.css — Janela onde os jogos abrem
+   ============================================================ */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  background: rgba(3, 4, 5, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: opacity var(--dur-med), visibility var(--dur-med);
+}
+
+.modal.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.modal-content {
+  position: relative;
+  width: min(100%, 760px);
+  max-height: calc(100vh - 2 * var(--space-4));
+  max-height: calc(100dvh - 2 * var(--space-4));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-7) var(--space-6) var(--space-6);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-xl);
+  background:
+    radial-gradient(90% 50% at 50% 0%, var(--accent-soft), transparent 70%),
+    var(--bg-elev);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(0) scale(1);
+  transition: transform var(--dur-slow) var(--ease-back);
+}
+
+.modal-content:focus {
+  outline: none;
+}
+
+.modal.hidden .modal-content {
+  transform: translateY(30px) scale(0.96);
+}
+
+.close-btn {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  color: var(--text-dim);
+  transition: color var(--dur-fast), border-color var(--dur-fast), transform var(--dur-med) var(--ease-back);
+}
+
+.close-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.close-btn:hover {
+  color: var(--text);
+  border-color: var(--danger);
+  transform: rotate(90deg);
+}
+
+@media (max-width: 560px) {
+  .modal {
+    padding: 0;
+    align-items: end;
+  }
+
+  .modal-content {
+    max-height: 94vh;
+    max-height: 94dvh;
+    padding: var(--space-7) var(--space-4) var(--space-5);
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+  }
+}

@@ -1,6 +1,6 @@
 // ============================================================
 // blitz.js — Blitz Rápido
-// Desafio de listar coisas contra o relógio. Agora é uma corrida:
+// Desafio de listar coisas contra o relógio. É uma corrida:
 // os jogadores escrevem a resposta e submetem com Enter; no fim,
 // o grupo marca quem acertou e quem respondeu certo mais rápido
 // ganha mais pontos.
@@ -65,10 +65,10 @@ window.GameModules.blitz = {
 
     container.innerHTML = `
       <div class="game-screen">
-        <h2>⚡ Blitz Rápido</h2>
-        <p style="font-size:1.15rem; margin:1rem 0;">${challenge}</p>
+        <span class="game-tag">⚡ Blitz Rápido</span>
+        <h2>${challenge}</h2>
         <p class="mini-note">Todos podem responder! Quem escrever a resposta certa mais rápido ganha mais pontos.</p>
-        <div style="font-size:2.5rem; font-weight:bold; color:#ff4757;" id="timer">${this.timeLimit}s</div>
+        <div class="game-timer" id="timer">${this.timeLimit}s</div>
         <button class="game-btn" id="start-blitz">Começar ➔</button>
       </div>
     `;
@@ -87,21 +87,19 @@ window.GameModules.blitz = {
 
     container.innerHTML = `
       <div class="game-screen">
-        <h2>⚡ Blitz Rápido</h2>
-        <p style="font-size:1.1rem; margin:0.5rem 0 1rem;">${s.challenge}</p>
-        <div style="font-size:2.5rem; font-weight:bold; color:#ff4757;" id="timer">${s.timeLeft}s</div>
+        <span class="game-tag">⚡ Blitz Rápido</span>
+        <h2>${s.challenge}</h2>
+        <div class="game-timer" id="timer">${s.timeLeft}s</div>
 
-        <div class="option-row" style="margin-top:1rem; flex-wrap:wrap;">
-          <select id="answer-player" style="padding:0.5rem; border-radius:6px; border:1px solid #3A3D5B; background:#0F1017; color:#fff;">
-            ${playerOptions}
-          </select>
-          <input type="text" id="answer-input" placeholder="Escreve a resposta e Enter...">
-          <button class="game-btn secondary" id="submit-answer" style="margin-top:0;">Enviar</button>
+        <div class="answer-form">
+          <select id="answer-player" class="game-select" aria-label="Quem responde">${playerOptions}</select>
+          <input type="text" id="answer-input" class="game-input" placeholder="Escreve a resposta e Enter..." autocomplete="off">
+          <button class="game-btn secondary" id="submit-answer">Enviar</button>
         </div>
 
-        <div class="option-list" id="submissions-list" style="margin-top:1rem;"></div>
+        <div class="option-list" id="submissions-list"></div>
 
-        <button class="game-btn secondary" id="finish-early" style="margin-top:1rem;">Terminar Ronda ➔</button>
+        <button class="game-btn secondary" id="finish-early">Terminar ronda ➔</button>
       </div>
     `;
 
@@ -112,8 +110,8 @@ window.GameModules.blitz = {
     const submit = () => this.submitAnswer(container, select.value, input.value);
 
     container.querySelector('#submit-answer').addEventListener('click', submit);
-    input.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') submit();
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.isComposing) submit();
     });
     container.querySelector('#finish-early').addEventListener('click', () => this.finishRound(container));
 
@@ -122,7 +120,7 @@ window.GameModules.blitz = {
     this.timerId = setInterval(() => {
       s.timeLeft--;
       timerEl.textContent = `${s.timeLeft}s`;
-      if (s.timeLeft <= 5) timerEl.style.color = '#ffa502';
+      timerEl.classList.toggle('is-warning', s.timeLeft <= 5);
       if (s.timeLeft <= 0) {
         clearInterval(this.timerId);
         this.finishRound(container);
@@ -169,10 +167,8 @@ window.GameModules.blitz = {
 
     list.innerHTML = sorted.map((sub, i) => `
       <div class="option-row">
-        <span style="flex:1; padding:0.5rem; background:#0F1017; border-radius:6px;">
-          ${i + 1}º ${escapeHtml(sub.player)}: "${escapeHtml(sub.answer)}"
-        </span>
-        <span style="padding:0.5rem; color:#2ed573;">${(sub.elapsedMs / 1000).toFixed(1)}s</span>
+        <span class="row-label">${i + 1}º ${escapeHtml(sub.player)}: "${escapeHtml(sub.answer)}"</span>
+        <span class="row-points">${(sub.elapsedMs / 1000).toFixed(1)}s</span>
       </div>
     `).join('');
   },
@@ -187,8 +183,8 @@ window.GameModules.blitz = {
       container.innerHTML = `
         <div class="game-screen">
           <h2>⏰ Tempo esgotado!</h2>
-          <p style="margin:1rem 0;">Ninguém respondeu a tempo...</p>
-          <button class="game-btn" id="next-blitz">Próxima Ronda ➔</button>
+          <p class="game-lead">Ninguém respondeu a tempo...</p>
+          <button class="game-btn" id="next-blitz">Próxima ronda ➔</button>
         </div>
       `;
       container.querySelector('#next-blitz').addEventListener('click', () => this.render(container));
@@ -198,18 +194,16 @@ window.GameModules.blitz = {
     container.innerHTML = `
       <div class="game-screen">
         <h2>⏰ Tempo esgotado!</h2>
-        <p class="mini-note" style="margin-bottom:1rem;">Marca quem respondeu corretamente (o grupo decide).</p>
+        <p class="mini-note">Marca quem respondeu corretamente (o grupo decide).</p>
         <div class="option-list" id="review-list">
           ${sorted.map((sub, i) => `
             <div class="option-row">
-              <span style="flex:1; padding:0.5rem; background:#0F1017; border-radius:6px;">
-                ${i + 1}º ${escapeHtml(sub.player)}: "${escapeHtml(sub.answer)}" <span style="color:#6B6F94;">(${(sub.elapsedMs / 1000).toFixed(1)}s)</span>
-              </span>
-              <button class="game-btn secondary" data-correct="${i}" style="margin-top:0;">✔️ Correto</button>
+              <span class="row-label">${i + 1}º ${escapeHtml(sub.player)}: "${escapeHtml(sub.answer)}" <span class="row-meta">(${(sub.elapsedMs / 1000).toFixed(1)}s)</span></span>
+              <button class="game-btn secondary small" data-correct="${i}" aria-pressed="false">✔️ Correto</button>
             </div>
           `).join('')}
         </div>
-        <button class="game-btn" id="calc-points" style="margin-top:1rem;">Atribuir Pontos ➔</button>
+        <button class="game-btn" id="calc-points">Atribuir pontos ➔</button>
       </div>
     `;
 
@@ -217,15 +211,12 @@ window.GameModules.blitz = {
     container.querySelectorAll('[data-correct]').forEach(btn => {
       btn.addEventListener('click', () => {
         const idx = Number(btn.dataset.correct);
-        if (correctSet.has(idx)) {
-          correctSet.delete(idx);
-          btn.textContent = '✔️ Correto';
-          btn.style.background = '';
-        } else {
-          correctSet.add(idx);
-          btn.textContent = '✅ Marcado';
-          btn.style.background = '#2ed573';
-        }
+        const on = !correctSet.has(idx);
+        if (on) correctSet.add(idx);
+        else correctSet.delete(idx);
+        btn.classList.toggle('is-on', on);
+        btn.setAttribute('aria-pressed', String(on));
+        btn.textContent = on ? '✅ Marcado' : '✔️ Correto';
       });
     });
 
@@ -242,19 +233,17 @@ window.GameModules.blitz = {
   showFinalSummary(container, sorted, correctSet) {
     container.innerHTML = `
       <div class="game-screen">
-        <h2>🏆 Resultado da Ronda</h2>
-        <div class="option-list" style="margin-top:1rem;">
+        <h2>🏆 Resultado da ronda</h2>
+        <div class="option-list">
           ${sorted.map((sub, i) => `
             <div class="option-row">
-              <span style="flex:1; padding:0.5rem; background:#0F1017; border-radius:6px;">
-                ${correctSet.has(i) ? '✅' : '❌'} ${escapeHtml(sub.player)}: "${escapeHtml(sub.answer)}"
-              </span>
-              <span style="padding:0.5rem; color:${correctSet.has(i) ? '#2ed573' : '#6B6F94'};">${(sub.elapsedMs / 1000).toFixed(1)}s</span>
+              <span class="row-label">${correctSet.has(i) ? '✅' : '❌'} ${escapeHtml(sub.player)}: "${escapeHtml(sub.answer)}"</span>
+              <span class="row-points ${correctSet.has(i) ? '' : 'is-muted'}">${(sub.elapsedMs / 1000).toFixed(1)}s</span>
             </div>
           `).join('')}
         </div>
-        <p class="mini-note">Pontos já adicionados ao Placar global.</p>
-        <button class="game-btn" id="next-blitz" style="margin-top:1rem;">Próxima Ronda ➔</button>
+        <p class="mini-note">Pontos já adicionados ao placar da noite.</p>
+        <button class="game-btn" id="next-blitz">Próxima ronda ➔</button>
       </div>
     `;
     container.querySelector('#next-blitz').addEventListener('click', () => this.render(container));

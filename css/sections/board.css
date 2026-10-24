@@ -1,0 +1,108 @@
+/* ============================================================
+   board.css — Placar ao vivo (lista estilo "próximos lançamentos")
+   ============================================================ */
+
+.board-list {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+}
+
+.score-row {
+  display: grid;
+  grid-template-columns: 64px 44px minmax(0, 1fr) minmax(80px, 2fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  transition: background var(--dur-fast);
+}
+
+.score-row + .score-row {
+  border-top: 1px solid var(--line);
+}
+
+.score-row:hover {
+  background: var(--surface-2);
+}
+
+.score-rank {
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.score-rank small {
+  display: block;
+  color: var(--text-mute);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+}
+
+.score-row .player-avatar {
+  width: 44px;
+  height: 44px;
+}
+
+.score-name {
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.score-bar {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--surface-3);
+}
+
+.score-bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--blue));
+  transition: width var(--dur-slow) var(--ease-out);
+}
+
+.score-pts {
+  min-width: 90px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--accent);
+  border-radius: var(--r-sm);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  text-align: center;
+}
+
+.score-empty {
+  padding: var(--space-7) var(--space-5);
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .score-row {
+    grid-template-columns: 40px 36px minmax(0, 1fr) auto;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .score-row .player-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .score-bar {
+    grid-column: 3 / -1;
+    grid-row: 2;
+  }
+
+  .score-pts {
+    min-width: 0;
+  }
+}

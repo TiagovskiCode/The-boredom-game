@@ -59,13 +59,12 @@ window.GameModules.provavel = {
 
     container.innerHTML = `
       <div class="game-screen">
-        <h2>🤔 Quem É Mais Provável?</h2>
-        <p style="margin-top:1rem; font-size:1.2rem;">
-          Quem é mais provável que <strong>${question}</strong>?
-        </p>
-        <p class="chosen-player">🏆 ${player}</p>
-        <button class="game-btn" id="next-question">Próxima Pergunta ➔</button>
-        <p class="mini-note">Adiciona amigos no topo da página para o sorteio ser mais justo.</p>
+        <span class="game-tag">Quem É Mais Provável?</span>
+        <h2>Quem é mais provável que ${question}?</h2>
+        <p class="mini-note">Contem até três e apontem todos ao mesmo tempo. A sorte sugere:</p>
+        <p class="chosen-player">${escapeHtml(player)}</p>
+        <button class="game-btn" id="next-question">Próxima pergunta ➔</button>
+        <p class="mini-note">Adiciona amigos na secção "Quem joga hoje?" para o sorteio ser mais justo.</p>
       </div>
     `;
 

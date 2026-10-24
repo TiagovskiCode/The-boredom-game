@@ -69,12 +69,12 @@ window.GameModules['verdade-desafio'] = {
 
     container.innerHTML = `
       <div class="game-screen">
-        <h2>🔥 Verdade ou Desafio</h2>
-        <p style="margin-top:1rem;">É a vez de:</p>
-        <p class="chosen-player">${player}</p>
-        <div style="display:flex; gap:1rem; justify-content:center; margin-top:1rem;">
-          <button class="game-btn" id="pick-truth">Verdade</button>
-          <button class="game-btn secondary" id="pick-dare">Desafio</button>
+        <span class="game-tag">Verdade ou Desafio</span>
+        <h2>É a vez de</h2>
+        <p class="chosen-player">${escapeHtml(player)}</p>
+        <div class="btn-row">
+          <button class="game-btn" id="pick-truth">💬 Verdade</button>
+          <button class="game-btn secondary" id="pick-dare">⚡ Desafio</button>
         </div>
       </div>
     `;
@@ -89,9 +89,9 @@ window.GameModules['verdade-desafio'] = {
 
     container.innerHTML = `
       <div class="game-screen">
-        <h2>🔥 ${label} para ${player}</h2>
-        <p style="margin:1.5rem 0; font-size:1.2rem;">${text}</p>
-        <button class="game-btn" id="next-round">Próxima Ronda ➔</button>
+        <span class="game-tag">${label} para ${escapeHtml(player)}</span>
+        <p class="big-word big-word--text">${text}</p>
+        <button class="game-btn" id="next-round">Próxima ronda ➔</button>
       </div>
     `;
 

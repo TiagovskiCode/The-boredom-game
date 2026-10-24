@@ -1,0 +1,68 @@
+/* ============================================================
+   chips.css — Etiquetas pequenas, filtros e badges
+   ============================================================ */
+
+/* Etiqueta neutra (ex: "~10 min") */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  height: 26px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  color: var(--text-dim);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Etiqueta com a cor da marca (ex: "FESTA") */
+.chip--accent {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Caixa com número (ex: "3+" jogadores, como as notas "9.8") */
+.score-box {
+  display: inline-grid;
+  place-items: center;
+  min-width: 34px;
+  height: 24px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+
+/* ---------- Botões de filtro ---------- */
+
+.filter-btn {
+  height: 38px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  color: var(--text-dim);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  transition: all var(--dur-fast);
+}
+
+.filter-btn:hover {
+  border-color: var(--text-dim);
+  color: var(--text);
+}
+
+.filter-btn.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+}

@@ -1,0 +1,45 @@
+/* ============================================================
+   how.css — "Como funciona" (3 passos)
+   ============================================================ */
+
+.how {
+  background:
+    radial-gradient(40% 60% at 50% 100%, var(--accent-soft), transparent 70%),
+    var(--bg);
+}
+
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+.how-step {
+  position: relative;
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-5);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+}
+
+.how-num {
+  color: transparent;
+  font-family: var(--font-display);
+  font-size: 5rem;
+  font-weight: 800;
+  line-height: 0.9;
+  -webkit-text-stroke: 1.5px var(--accent);
+}
+
+.how-step h3 {
+  font-size: var(--fs-xl);
+  transform: translateZ(30px);
+}
+
+@media (max-width: 860px) {
+  .how-grid {
+    grid-template-columns: 1fr;
+  }
+}

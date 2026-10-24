@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   const TIME_LIMIT = 45;
   const WARNING_AT = 10;
   const POINTS = 30;
@@ -45,7 +45,7 @@
       container.innerHTML = `
         <div class="game-screen">
           <h2>📝 Categorias</h2>
-          <p class="game-lead">Precisas de pelo menos <strong>2 jogadores</strong> adicionados no topo da página para jogar.</p>
+          <p class="game-lead">Precisas de pelo menos <strong>2 jogadores</strong> adicionados na secção "Quem joga hoje?" para jogar.</p>
         </div>
       `;
       return;
@@ -57,9 +57,10 @@
 
     container.innerHTML = `
       <div class="game-screen">
-        <h2>📝 Categorias</h2>
+        <span class="game-tag">Categorias</span>
+        <h2>Palavras começadas por</h2>
+        <p class="game-letter" aria-label="Letra ${round.letter}">${round.letter}</p>
         <p class="mini-note">Todos escrevem em simultâneo (papel, notas ou em voz alta) uma palavra por categoria que comece pela letra sorteada.</p>
-        <p class="game-letter">Letra: ${round.letter}</p>
         <div class="option-list">
           ${round.categories.map(c => `
             <div class="option-row">
@@ -108,7 +109,7 @@
         <p class="mini-note">Quem teve mais respostas válidas e únicas nesta ronda?</p>
         <div class="option-list">
           ${players.length === 0
-            ? '<p class="mini-note">Adiciona jogadores no topo da página para atribuir pontos.</p>'
+            ? '<p class="mini-note">Adiciona jogadores na secção "Quem joga hoje?" para atribuir pontos.</p>'
             : players.map(p => `
               <div class="option-row">
                 <span class="row-label">${escapeHtml(p)}</span>
